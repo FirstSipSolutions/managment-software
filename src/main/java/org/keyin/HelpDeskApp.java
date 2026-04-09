@@ -1,27 +1,26 @@
 package org.keyin;
 
-
-
-import org.keyin.memberships.MembershipService;
+import org.keyin.serviceplans.ServicePlanService;
+import org.keyin.user.User;
 import org.keyin.user.UserService;
-import org.keyin.workoutclasses.WorkoutClassService;
+import org.keyin.tickets.TicketService;
 
 import java.sql.SQLException;
 import java.util.Scanner;
 
-public class GymApp {
+public class HelpDeskApp {
     public static void main(String[] args) throws SQLException {
         // Initialize services
         UserService userService = new UserService();
-        MembershipService membershipService = new MembershipService();
-        WorkoutClassService workoutService = new WorkoutClassService();
+        ServicePlanService servicePlanService = new ServicePlanService();
+        TicketService ticketService = new TicketService();
 
         // Scanner for user input
         Scanner scanner = new Scanner(System.in);
         int choice;
 
         do {
-            System.out.println("\n=== Gym Management System ===");
+            System.out.println("\n=== Help Desk Management System ===");
             System.out.println("1. Add a new user");
             System.out.println("2. Login as a user");
             System.out.println("3. Exit");
@@ -41,7 +40,7 @@ public class GymApp {
                     addNewUser(scanner, userService);
                     break;
                 case 2:
-                    logInAsUser(scanner, userService, membershipService, workoutService);
+                    logInAsUser(scanner, userService, servicePlanService, ticketService);
                     break;
                 case 3:
                     System.out.println("Exiting the program...");
@@ -54,7 +53,7 @@ public class GymApp {
         scanner.close();
     }
 
-    private static void logInAsUser(Scanner scanner, UserService userService, MembershipService membershipService, WorkoutService workoutService) {
+    private static void logInAsUser(Scanner scanner, UserService userService, ServicePlanService servicePlanService, TicketService workoutService) {
         System.out.print("Enter username: ");
         String username = scanner.nextLine();
         System.out.print("Enter password: ");
@@ -66,13 +65,13 @@ public class GymApp {
                 System.out.println("Login Successful! Welcome " + user.getUserName());
                 switch (user.getUserRole().toLowerCase()) {
                     case "admin":
-                        showAdminMenu(scanner, user, userService, membershipService, workoutService);
+                        showAdminMenu(scanner, user, userService, servicePlanService, workoutService);
                         break;
-                    case "trainer":
-                        // show menu for trainer
+                    case "technician":
+                        // show menu for technician
                         break;
-                    case "member":
-                        // show menu for member
+                    case "employee":
+                        // show menu for employee
                         break;
                     default:
 
@@ -87,18 +86,19 @@ public class GymApp {
         }
     }
 
-    // Placeholder for Member menu
-    private static void showMemberMenu(Scanner scanner, User user, UserService userService, MembershipService membershipService) {
-        System.out.println("Member menu under construction.");
+    // Placeholder for employee menu
+    private static void showEmployeeMenu(Scanner scanner, User user, UserService userService,ServicePlanService servicePlanService) {
+        System.out.println("Employee menu under construction.");
     }
 
-    // Placeholder for Trainer menu
-    private static void showTrainerMenu(Scanner scanner, User user, UserService userService, WorkoutService workoutService) {
-        System.out.println("Trainer menu under construction.");
+
+    // Placeholder for Technician menu
+    private static void showTechnicianMenu(Scanner scanner, User user, UserService userService, TicketService ticketService) {
+        System.out.println("Technician menu under construction.");
     }
 
     // Admin menu with minimal implementation
-    private static void showAdminMenu(Scanner scanner, User user, UserService userService, MembershipService membershipService, WorkoutService workoutService) {
+    private static void showAdminMenu(Scanner scanner, User user, UserService userService, ServicePlanService servicePlanService, TicketService ticketService) {
         System.out.println("Admin menu under construction.");
     }
 
