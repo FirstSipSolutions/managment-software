@@ -62,8 +62,8 @@ public class HelpDeskApp {
         try {
             User user = userService.loginForUser(username, password);
             if (user != null) {
-                System.out.println("Login Successful! Welcome " + user.getUserName());
-                switch (user.getUserRole().toLowerCase()) {
+                System.out.println("Login Successful! Welcome " + user.getUser_name());
+                switch (user.getUser_role().toLowerCase()) {
                     case "admin":
                         showAdminMenu(scanner, user, userService, servicePlanService, workoutService);
                         break;
@@ -80,7 +80,8 @@ public class HelpDeskApp {
             } else {
                 System.out.println("Login Failed! Invalid credentials.");
             }
-        } catch (SQLException e) {
+        }
+        catch (SQLException e) {
             System.out.println("An error occurred while logging in.");
             e.printStackTrace();
         }
