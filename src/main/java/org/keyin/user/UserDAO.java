@@ -4,11 +4,11 @@ import org.keyin.database.DatabaseConnection;
 
 import java.sql.*;
 
-public class UserDao {
+public class UserDAO {
 
     public User getUserByUsername(String username) throws SQLException {
         String sql = "SELECT * FROM users WHERE user_name = ?";
-        DriverManager DatabaseConnector;
+//        DriverManager DatabaseConnector;
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, username);
