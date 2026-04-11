@@ -24,12 +24,8 @@ public class User {
         this.user_id = user_id;
         this.user_name = user_name;
         this.user_password = user_password;
-            if(user_role.equals("Admin") || user_role.equals("Technician") || user_role.equals("Employee")){
-                this.user_role = user_role;
-            }
-            else{
-                System.out.println("Error: User role must be Admin, Technician or Employee");
-            }
+        this.user_role = user_role;
+
     }
 
     public String getUser_role() {
