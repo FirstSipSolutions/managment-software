@@ -115,10 +115,16 @@ public class HelpDeskApp {
         String username = scanner.nextLine();
         System.out.print("Enter password: ");
         String password = scanner.nextLine();
-        System.out.print("Enter role (Admin/Technican/Employee): ");
+        System.out.print("Enter email: ");
+        String email = scanner.nextLine();
+        System.out.print("Enter phone: ");
+        String phone = scanner.nextLine();
+        System.out.print("Enter address: ");
+        String address = scanner.nextLine();
+        System.out.print("Enter role (ADMIN/TECHNICIAN/EMPLOYEE): ");
         String role = scanner.nextLine();
 
-        User user = new User(username, password, role);
+        User user = new User(username, password, email, phone, address, role);
         try {
             userService.addUser(user);
             System.out.println("User added successfully!");
@@ -126,4 +132,4 @@ public class HelpDeskApp {
             System.out.println("Error adding user: " + e.getMessage());
         }
     }
-}
+        }

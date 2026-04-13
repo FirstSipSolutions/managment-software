@@ -37,10 +37,15 @@ public class UserService {
 
     // added hashing here in the sql execption
     // user added affter hash accepted
+
+
     public void addUser(User user) throws SQLException{
+
+
+
         String hashed = PasswordUtil.hashPassword(user.getUser_password());
         user.setUser_password(hashed);
-        userDAO.adduser(user);
+        userDAO.addUser(user);
 
 
 
