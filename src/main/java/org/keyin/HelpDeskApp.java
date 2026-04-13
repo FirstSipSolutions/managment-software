@@ -1,5 +1,6 @@
 package org.keyin;
 
+import org.keyin.customlogger.CustomLogger;
 import org.keyin.serviceplans.ServicePlanService;
 import org.keyin.user.User;
 import org.keyin.user.UserService;
@@ -14,6 +15,11 @@ public class HelpDeskApp {
         UserService userService = new UserService();
         ServicePlanService servicePlanService = new ServicePlanService();
         TicketService ticketService = new TicketService();
+
+        // CustomLogger Object called and test
+        CustomLogger logger = new CustomLogger();
+        logger.logInfo("App started");
+        logger.logError("Test error");
 
         // Scanner for user input
         Scanner scanner = new Scanner(System.in);
