@@ -1,8 +1,16 @@
 package org.keyin.serviceplans;
 
+import org.keyin.database.DatabaseConnection;
+
+import java.security.Provider;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
 // ServicePLanDAO is responsible for all database operations related to service plans.
 public class ServiceDAO {
-
+    ServicePlan servicePlan = new ServicePlan();
 
     /**
      * Example method for adding a membership to the database.
@@ -11,15 +19,16 @@ public class ServiceDAO {
      *
      * Uncomment and update the method to use the actual Membership object and its fields.
      */
-//    public void addMemberShip() throws SQLException {
-//        String sql = "INSERT INTO service_plans (plan_type, plan_price, plan_description, date_purchased, user_id) VALUES (?, ?, ?, ?, ?)";
-//        try (Connection conn = DatabaseConnection.getConnection();
-//             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-//            pstmt.setString(1, ServicePlan.getPlanType());
-//            pstmt.setInt(2, ServicePlan.getPlan_price());
-//            pstmt.setDate(4, Date.valueOf(ServicePlan.getDatePurchased()));
-//            pstmt.setInt(5, ServicePlan.getUser_id());
-//            pstmt.executeUpdate();
-//        }
-//    }
+    public void addMemberShip() throws SQLException {
+        String sql = "INSERT INTO service_plans (plan_type, plan_price, plan_description, date_purchased, user_id) VALUES (?, ?, ?, ?, ?)";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, servicePlan.getPlanType());
+            pstmt.setString(2, servicePlan.getPlanDescription());
+            pstmt.setFloat(3, servicePlan.getPlanPrice());
+            pstmt.setDate(4, Date.valueOf(servicePlan.getDatePurchased()));
+            pstmt.setInt(5, servicePlan.getUserId());
+            pstmt.executeUpdate();
+        }
+    }
 }
