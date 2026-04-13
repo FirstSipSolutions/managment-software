@@ -1,5 +1,7 @@
 package org.keyin.user;
 
+import org.keyin.utils.PasswordUtil;
+
 import java.sql.SQLException;
 
 public class UserService {
@@ -15,7 +17,15 @@ public class UserService {
 
     public User loginForUser(String username, String password) throws SQLException{
         User user = userDAO.getUserByUsername(username);
-        if (user != null && user.getUser_password().equals(password)) {
+
+
+        // added calling on passwordUtil class to initiate BCrypt through that class and handle passwords
+        // this user.getUser_password().equals(password))
+        // was removed to add bycrypt checking the password via password util
+
+
+
+        if (user != null && PasswordUtil.checkPassword(password, user.getUser_password())){
             return user;
         }
         return null;
