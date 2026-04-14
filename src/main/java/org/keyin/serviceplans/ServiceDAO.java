@@ -18,10 +18,10 @@ public class ServiceDAO {
      * This method demonstrates how to use a prepared statement to insert a service plan record.
      * It should take a service plan object as a parameter and insert its details into the database.
      *
-     * Uncomment and update the method to use the actual Membership object and its fields.
+     * Uncomment and update the method to use the actual service plan object and its fields.
      */
     public void addServicePlan(ServicePlan servicePlan) {
-        String sql = "INSERT INTO service_plans (plan_type, plan_description, plan_price,  date_purchased, user_id) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO service_plans (plan_type, plan_description, plan_price, date_purchased, user_id) VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, servicePlan.getPlanType());
