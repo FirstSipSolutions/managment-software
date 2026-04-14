@@ -1,5 +1,9 @@
 package org.keyin.serviceplans;
 
+import org.keyin.customlogger.CustomLogger;
+
+import java.sql.SQLException;
+
 /**
  * Service class is responsible for handling all business logic related to service plans.
  * This class interacts with the ServiceDAO to perform database operations.
@@ -10,8 +14,12 @@ package org.keyin.serviceplans;
  */
 public class ServicePlanService {
 
+    CustomLogger logger = new CustomLogger();
     ServiceDAO dao = new ServiceDAO();
 
+    public void addServicePlan(ServicePlan servicePlan) throws SQLException{
+            dao.addServicePlan();
 
+    }
 
 }
