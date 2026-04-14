@@ -3,7 +3,7 @@ CREATE TABLE users (
     username TEXT  NOT NULL UNIQUE,
     password_hash TEXT NOT NULL,
     email TEXT NOT NULL UNIQUE,
-    phone_number INTEGER,
+    phone_number TEXT,
     address TEXT,
     user_role TEXT NOT NULL CHECK (user_role IN ('ADMIN', 'TECHNICIAN', 'EMPLOYEE')),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
