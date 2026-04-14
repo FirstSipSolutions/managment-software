@@ -11,7 +11,6 @@ import java.sql.SQLException;
 
 // ServicePLanDAO is responsible for all database operations related to service plans.
 public class ServiceDAO {
-    ServicePlan servicePlan = new ServicePlan();
     CustomLogger logger = new CustomLogger();
 
     /**
@@ -21,8 +20,8 @@ public class ServiceDAO {
      *
      * Uncomment and update the method to use the actual Membership object and its fields.
      */
-    public void addServicePlan() {
-        String sql = "INSERT INTO service_plans (plan_type, plan_price, plan_description, date_purchased, user_id) VALUES (?, ?, ?, ?, ?)";
+    public void addServicePlan(ServicePlan servicePlan) {
+        String sql = "INSERT INTO service_plans (plan_type, plan_description, plan_price,  date_purchased, user_id) VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, servicePlan.getPlanType());
