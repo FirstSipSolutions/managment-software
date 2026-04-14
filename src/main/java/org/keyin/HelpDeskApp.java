@@ -110,7 +110,7 @@ public class HelpDeskApp {
     }
 
     // Minimal implementation of adding a new user
-    private static void addNewUser(Scanner scanner, UserService userService) {
+    private static void addNewUser(@org.checkerframework.checker.nullness.qual.NonNull Scanner scanner, UserService userService) {
         System.out.print("Enter username: ");
         String username = scanner.nextLine();
         System.out.print("Enter password: ");

@@ -3,9 +3,14 @@ package org.keyin.user;
 //*
 // This is the parent class for all users, There are 3 types of users: Technician, Employee, and Admin
 //
-// *//
+//*
+
+
+
 public class User {
     // Instance variables
+
+
     private Integer user_id;
     private String user_name;
     private String user_password;
@@ -17,6 +22,8 @@ public class User {
     this was added in as an adjustment to params
     requiring email, address and phone number
     */
+
+
     private String user_email;
     private String user_phone;
     private String user_address;
@@ -24,6 +31,9 @@ public class User {
 
 
     public User(){
+
+
+
     }
 
 
