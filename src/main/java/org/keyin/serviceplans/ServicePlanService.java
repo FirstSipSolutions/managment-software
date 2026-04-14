@@ -18,8 +18,7 @@ public class ServicePlanService {
     ServiceDAO dao = new ServiceDAO();
 
     public void addServicePlan(ServicePlan servicePlan) throws SQLException{
-            dao.addServicePlan();
-
+            dao.addServicePlan(servicePlan);
     }
 
 }
