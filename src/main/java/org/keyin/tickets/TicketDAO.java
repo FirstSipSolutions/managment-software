@@ -10,7 +10,6 @@ import org.keyin.database.DatabaseConnection;
 
 import org.keyin.customlogger.CustomLogger;
 
-import javax.xml.crypto.Data;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -84,7 +83,7 @@ public class TicketDAO {
             tickets.add(mapRow(rs));
 
         }
-            logger.logError("getAllTickets returned with: " + tickets.size() + " tickets");
+            logger.logInfo("getAllTickets returned with: " + tickets.size() + " tickets");
         } catch (SQLException sqlException) {
             logger.logError("Failed To Get All Tickets " + sqlException.getMessage());
         }
@@ -126,7 +125,7 @@ public class TicketDAO {
         logger.logInfo("getTicketsByUser returned as: " + tickets.size() + " tickets for user " + userId);
 
         }catch ( SQLException sqlException){
-            logger.logError("Failed to get the ticket for user " + userID + " " + sqlException.getMessage());
+            logger.logError("Failed to get the ticket for user " + userId + " " + sqlException.getMessage());
         }
 
 
