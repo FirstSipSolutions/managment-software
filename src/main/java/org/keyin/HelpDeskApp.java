@@ -1,0 +1,135 @@
+package org.keyin;
+
+import org.keyin.customlogger.CustomLogger;
+import org.keyin.serviceplans.ServicePlanService;
+import org.keyin.user.User;
+import org.keyin.user.UserService;
+import org.keyin.tickets.TicketService;
+
+import java.sql.SQLException;
+import java.util.Scanner;
+
+public class HelpDeskApp {
+    public static void main(String[] args) throws SQLException {
+        // Initialize services
+        UserService userService = new UserService();
+        ServicePlanService servicePlanService = new ServicePlanService();
+        TicketService ticketService = new TicketService();
+
+        // CustomLogger Object called and test
+        CustomLogger logger = new CustomLogger();
+        logger.logInfo("App started");
+        logger.logError("Test error");
+
+        // Scanner for user input
+        Scanner scanner = new Scanner(System.in);
+        int choice;
+
+        do {
+            System.out.println("\n=== Help Desk Management System ===");
+            System.out.println("1. Add a new user");
+            System.out.println("2. Login as a user");
+            System.out.println("3. Exit");
+            System.out.print("Enter your choice: ");
+
+            // Validate input
+            while (!scanner.hasNextInt()) {
+                System.out.println("Invalid input! Please enter a number.");
+                scanner.next();
+            }
+
+            choice = scanner.nextInt();
+            scanner.nextLine(); // Consume newline
+
+            switch (choice) {
+                case 1:
+                    addNewUser(scanner, userService);
+                    break;
+                case 2:
+                    logInAsUser(scanner, userService, servicePlanService, ticketService);
+                    break;
+                case 3:
+                    System.out.println("Exiting the program...");
+                    break;
+                default:
+                    System.out.println("Invalid choice! Please select a valid option.");
+            }
+        } while (choice != 3);
+
+        scanner.close();
+    }
+
+    private static void logInAsUser(Scanner scanner, UserService userService, ServicePlanService servicePlanService, TicketService workoutService) {
+        System.out.print("Enter username: ");
+        String username = scanner.nextLine();
+        System.out.print("Enter password: ");
+        String password = scanner.nextLine();
+
+        try {
+            User user = userService.loginForUser(username, password);
+            if (user != null) {
+                System.out.println("Login Successful! Welcome " + user.getUser_name());
+                switch (user.getUser_role().toLowerCase()) {
+                    case "admin":
+                        showAdminMenu(scanner, user, userService, servicePlanService, workoutService);
+                        break;
+                    case "technician":
+                        // show menu for technician
+                        break;
+                    case "employee":
+                        // show menu for employee
+                        break;
+                    default:
+
+                        break;
+                }
+            } else {
+                System.out.println("Login Failed! Invalid credentials.");
+            }
+        }
+        catch (SQLException e) {
+            System.out.println("An error occurred while logging in.");
+            e.printStackTrace();
+        }
+    }
+
+    // Placeholder for employee menu
+    private static void showEmployeeMenu(Scanner scanner, User user, UserService userService,ServicePlanService servicePlanService) {
+        System.out.println("Employee menu under construction.");
+    }
+
+
+    // Placeholder for Technician menu
+    private static void showTechnicianMenu(Scanner scanner, User user, UserService userService, TicketService ticketService) {
+        System.out.println("Technician menu under construction.");
+    }
+
+    // Admin menu with minimal implementation
+    private static void showAdminMenu(Scanner scanner, User user, UserService userService, ServicePlanService servicePlanService, TicketService ticketService) {
+        System.out.println("Admin menu under construction.");
+    }
+
+    // Minimal implementation of adding a new user
+    private static void addNewUser(Scanner scanner, UserService userService) {
+        System.out.print("Enter username: ");
+        String username = scanner.nextLine();
+        System.out.print("Enter password: ");
+        String password = scanner.nextLine();
+        System.out.print("Enter email: ");
+        String email = scanner.nextLine();
+        System.out.print("Enter phone: ");
+        String phone = scanner.nextLine();
+        System.out.print("Enter address: ");
+        String address = scanner.nextLine();
+        System.out.print("Enter role (ADMIN/TECHNICIAN/EMPLOYEE): ");
+        String role = scanner.nextLine();
+
+        User user = new User(username, password, email, phone, address, role);
+        try {
+            userService.addUser(user);
+            System.out.println("User added successfully!");
+        } catch (SQLException e) {
+            System.out.println("Error adding user: " + e.getMessage());
+        }
+    }
+        }
