@@ -190,8 +190,43 @@ public class TicketDAO {
 
             pstmt.setString(1, newStatus);
             pstmt.setInt( 2, ticketId);
+            pstmt.executeUpdate();
+            logger.logInfo("Ticket " + ticketId + " status updated to " + newStatus);
 
 
+        }catch (SQLException sqlException){
+            logger.logError("Failed to update ticket please try again, your ticket number you tried was " + ticketId + " " + sqlException.getMessage());
+        }
+    }
+
+
+
+         // this will handle the tickets deleted by ID
+        //todo: this will be used by ADMIN
+
+
+
+
+
+
+
+    public void deleteTicket( int ticketId) throws SQLException{
+
+
+        String sql = "DELETE FROM tickets WHERE id = ?";
+
+
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)){
+
+            pstmt.setInt( 1, ticketId);
+            pstmt.executeUpdate();
+            logger.logInfo("Ticket deleted " + ticketId );
+
+
+        }catch (SQLException sqlException){
+            logger.logError("Failed to delete ticket please try again, your ticket number you tried was " + ticketId + " " + sqlException.getMessage());
         }
     }
 
@@ -200,45 +235,29 @@ public class TicketDAO {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        /*
-        this will handle the tickets deleted by ID
-        that will be ADMIN who uses this constructor
- */
-
-
-
-
-
-
-
-    public void deleteTicket( int TicketId) throws SQLException{
-
-    }
-            /*
-            here as the last constructor sits so far
-             this will be to map DB rows to the ticket object
-            */
-
-
-    // update this was set to public casusing error so corrected to private
+             //todo: this maps DB rows to the ticket object
 
 
     private Ticket mapRow(ResultSet rs) throws SQLException{
-        return new Ticket();
+
+        return new Ticket(
+
+                rs.getInt("id"),
+                rs.getString("title"),
+                rs.getString("description"),
+                rs.getString("category"),
+                rs.getString("priority"),
+                rs.getString("status"),
+                rs.getInt("submitted_by"),
+                rs.getInt("assigned_to"),
+                rs.getString("date_opened") != null ? rs.getDate("date_opened").toLocalDate() : null,
+                rs.getDate("date_resolved") != null ? rs.getDate("date_resolved").toLocalDate() : null
+
+
+
+
+
+        );
     }
 }
 
