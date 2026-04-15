@@ -1,12 +1,14 @@
 package org.keyin;
 
 import org.keyin.customlogger.CustomLogger;
+import org.keyin.serviceplans.ServicePlan;
 import org.keyin.serviceplans.ServicePlanService;
 import org.keyin.user.User;
 import org.keyin.user.UserService;
 import org.keyin.tickets.TicketService;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.Scanner;
 
 public class HelpDeskApp {
@@ -19,7 +21,6 @@ public class HelpDeskApp {
         // CustomLogger Object called and test
         CustomLogger logger = new CustomLogger();
         logger.logInfo("App started");
-        logger.logError("Test error");
 
         // Scanner for user input
         Scanner scanner = new Scanner(System.in);
@@ -59,7 +60,7 @@ public class HelpDeskApp {
         scanner.close();
     }
 
-    private static void logInAsUser(Scanner scanner, UserService userService, ServicePlanService servicePlanService, TicketService workoutService) {
+    private static void logInAsUser(Scanner scanner, UserService userService, ServicePlanService servicePlanService, TicketService ticketService) {
         System.out.print("Enter username: ");
         String username = scanner.nextLine();
         System.out.print("Enter password: ");
@@ -68,16 +69,17 @@ public class HelpDeskApp {
         try {
             User user = userService.loginForUser(username, password);
             if (user != null) {
+                System.out.println();
                 System.out.println("Login Successful! Welcome " + user.getUser_name());
                 switch (user.getUser_role().toLowerCase()) {
                     case "admin":
-                        showAdminMenu(scanner, user, userService, servicePlanService, workoutService);
+                        showAdminMenu(scanner, user, userService, servicePlanService, ticketService);
                         break;
                     case "technician":
-                        // show menu for technician
+                        showTechnicianMenu(scanner, user, userService, ticketService);
                         break;
                     case "employee":
-                        // show menu for employee
+                        showEmployeeMenu(scanner, user, userService, servicePlanService);
                         break;
                     default:
 
@@ -95,7 +97,37 @@ public class HelpDeskApp {
 
     // Placeholder for employee menu
     private static void showEmployeeMenu(Scanner scanner, User user, UserService userService,ServicePlanService servicePlanService) {
-        System.out.println("Employee menu under construction.");
+        int choice;
+
+        do {
+            System.out.println();
+            System.out.println("=== Employee Menu ===");
+            System.out.println("Choose an option:");
+            System.out.println("1. Purchase a Service Plan");
+            System.out.println("9. Exit");
+            System.out.print("Enter your choice: ");
+
+            // Validate input
+            while (!scanner.hasNextInt()) {
+                System.out.println("Invalid input! Please enter a number.");
+                scanner.next();
+            }
+
+            choice = scanner.nextInt();
+            scanner.nextLine(); // Consume newline
+
+            switch (choice) {
+                case 1:
+                    addServicePlan(scanner, servicePlanService);
+                    break;
+                case 9:
+                    System.out.println("Leaving employee menu...");
+                    break;
+                default:
+                    System.out.println("Invalid choice! Please select a valid option.");
+            }
+        } while (choice != 9);
+
     }
 
 
@@ -110,7 +142,7 @@ public class HelpDeskApp {
     }
 
     // Minimal implementation of adding a new user
-    private static void addNewUser(@org.checkerframework.checker.nullness.qual.NonNull Scanner scanner, UserService userService) {
+    private static void addNewUser(Scanner scanner, UserService userService) {
         System.out.print("Enter username: ");
         String username = scanner.nextLine();
         System.out.print("Enter password: ");
@@ -130,6 +162,27 @@ public class HelpDeskApp {
             System.out.println("User added successfully!");
         } catch (SQLException e) {
             System.out.println("Error adding user: " + e.getMessage());
+        }
+    }
+
+    private static void addServicePlan(Scanner scanner, ServicePlanService servicePlanService){
+        System.out.println("Enter plan type: ");
+        String planType = scanner.nextLine();
+        System.out.println("Enter plan description: ");
+        String planDescription = scanner.nextLine();
+        System.out.println("Enter plan price: ");
+        Float planPrice = scanner.nextFloat();
+        LocalDate datePurchased = LocalDate.now();
+        System.out.println("Enter user ID: ");
+        int userId = scanner.nextInt();
+        scanner.nextLine();
+
+        ServicePlan servicePlan = new ServicePlan(planType, planDescription, planPrice, datePurchased, userId);
+        try{
+            servicePlanService.addServicePlan(servicePlan);
+            System.out.println("Plan added successfully!");
+        } catch(SQLException e){
+            System.out.println("Error adding plan: " + e.getMessage());
         }
     }
         }
