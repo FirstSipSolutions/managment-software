@@ -20,7 +20,6 @@ class PasswordUtilTest {
     @org.junit.jupiter.api.Test
     void checkPassword() {
 
-
         // confirming correct password when passing bycrpt check
 
         String hashed = PasswordUtil.hashPassword("Password123!");
