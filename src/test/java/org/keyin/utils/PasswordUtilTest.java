@@ -29,7 +29,8 @@ class PasswordUtilTest {
 
     }
 
-    // adding a confirm test for when a ticket is deleted next
+    // correction ticket was typed but meant to point in the direction of password not ticket
+    // adding a confirm test for when a password is wrong
     // not sure how I will build this out but im going to push my work and debug
 
 
