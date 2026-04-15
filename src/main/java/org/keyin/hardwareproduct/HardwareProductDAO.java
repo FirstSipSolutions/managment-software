@@ -26,9 +26,45 @@ public class HardwareProductsDAO {
             pstmt.setDouble(3, item.getItemPrice());
             pstmt.setInt(4, item.getQty_inStock());
             pstmt.executeUpdate();
+
+
             logger.logInfo("Hardware item added: " + item.getItemName());
         } catch (SQLException sqlException) {
             logger.logError("Adding hardware item failed: " + sqlException.getMessage());
         }
     }
+
+
+
+
+
+
+
+    // todo: Returns all hardware items -- ALL ROLES
+    // todo: note that the rs = executeQuery will send select to the DB and return the result set.
+
+    public List<HardwareProducts> getAllItems() throws SQLException {
+        List<HardwareProducts> items = new ArrayList<>();
+        String sql = "SELECT * FROM hardware_inventory";
+
+
+
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+
+            // while loop comes into play to loop through the array ( this will populate the array )
+            while (rs.next()) {
+                items.add(mapRow(rs));
+            }
+            logger.logInfo("getAllItems returned with: " + items.size() + " items");
+
+        } catch (SQLException sqlException) {
+
+            logger.logError("Failed to get all hardware items: " + sqlException.getMessage());
+        }
+        return items;
+    }
 }
+
