@@ -9,6 +9,7 @@ import org.keyin.tickets.TicketService;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Scanner;
 
 public class HelpDeskApp {
@@ -18,24 +19,24 @@ public class HelpDeskApp {
         ServicePlanService servicePlanService = new ServicePlanService();
         TicketService ticketService = new TicketService();
 
-        // CustomLogger Object called and test
+        // CustomLogger method to log info and errors to a text file.
         CustomLogger logger = new CustomLogger();
-        logger.logInfo("App started");
 
         // Scanner for user input
         Scanner scanner = new Scanner(System.in);
         int choice;
 
         do {
-            System.out.println("\n=== Help Desk Management System ===");
-            System.out.println("1. Add a new user");
+            logger.logInfo("App started");
+            System.out.println("\n === IT Help Desk Management System ===");
+            System.out.println("\n1. Add a new user");
             System.out.println("2. Login as a user");
-            System.out.println("3. Exit");
-            System.out.print("Enter your choice: ");
+            System.out.println("9. Exit");
+            System.out.print("\nEnter your choice: ");
 
             // Validate input
             while (!scanner.hasNextInt()) {
-                System.out.println("Invalid input! Please enter a number.");
+                System.out.println("\nInvalid input! Please enter a number.");
                 scanner.next();
             }
 
@@ -47,20 +48,22 @@ public class HelpDeskApp {
                     addNewUser(scanner, userService);
                     break;
                 case 2:
-                    logInAsUser(scanner, userService, servicePlanService, ticketService);
+                    logInAsUser(scanner, userService, servicePlanService, ticketService, logger);
                     break;
-                case 3:
-                    System.out.println("Exiting the program...");
+                case 9:
+                    System.out.println("\nExiting the program...");
+                    logger.logInfo("Program closed");
                     break;
                 default:
-                    System.out.println("Invalid choice! Please select a valid option.");
+                    System.out.println("\nInvalid choice! Please select a valid option.");
+                    logger.logError("User entered invalid option.");
             }
-        } while (choice != 3);
+        } while (choice != 9);
 
         scanner.close();
     }
 
-    private static void logInAsUser(Scanner scanner, UserService userService, ServicePlanService servicePlanService, TicketService ticketService) {
+    private static void logInAsUser(Scanner scanner, UserService userService, ServicePlanService servicePlanService, TicketService ticketService, CustomLogger logger) {
         System.out.print("Enter username: ");
         String username = scanner.nextLine();
         System.out.print("Enter password: ");
@@ -69,14 +72,13 @@ public class HelpDeskApp {
         try {
             User user = userService.loginForUser(username, password);
             if (user != null) {
-                System.out.println();
-                System.out.println("Login Successful! Welcome " + user.getUser_name());
+                System.out.println("\nLogin Successful! Welcome " + user.getUser_name());
                 switch (user.getUser_role().toLowerCase()) {
                     case "admin":
                         showAdminMenu(scanner, user, userService, servicePlanService, ticketService);
                         break;
                     case "technician":
-                        showTechnicianMenu(scanner, user, userService, ticketService);
+                        showTechnicianMenu(scanner, user, userService, ticketService, servicePlanService, logger);
                         break;
                     case "employee":
                         showEmployeeMenu(scanner, user, userService, servicePlanService);
@@ -88,28 +90,138 @@ public class HelpDeskApp {
             } else {
                 System.out.println("Login Failed! Invalid credentials.");
             }
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             System.out.println("An error occurred while logging in.");
             e.printStackTrace();
         }
     }
 
-    // Placeholder for employee menu
-    private static void showEmployeeMenu(Scanner scanner, User user, UserService userService,ServicePlanService servicePlanService) {
+    // Employee menu
+    private static void showEmployeeMenu(Scanner scanner, User user, UserService userService, ServicePlanService servicePlanService) {
         int choice;
 
         do {
-            System.out.println();
-            System.out.println("=== Employee Menu ===");
-            System.out.println("Choose an option:");
-            System.out.println("1. Purchase a Service Plan");
-            System.out.println("9. Exit");
-            System.out.print("Enter your choice: ");
+            System.out.println("\n =====================");
+            System.out.println(" === Employee Menu ===");
+            System.out.println(" =====================");
+            System.out.println("\n   Choose an option");
+            System.out.println("\n1. View Service Plans");
+            System.out.println("2. Submit a ticket");
+            System.out.println("3.View my ticket");
+            System.out.println("9. Logout");
+            System.out.print("\nEnter your choice: ");
 
             // Validate input
             while (!scanner.hasNextInt()) {
-                System.out.println("Invalid input! Please enter a number.");
+                System.out.println("\nInvalid input! Please enter a number.");
+                scanner.next();
+            }
+
+            choice = scanner.nextInt();
+            scanner.nextLine(); // Consume newline
+
+            switch (choice) {
+                case 1:
+                    try {
+                        List<ServicePlan> plans = servicePlanService.getAllServicePlans();
+                        System.out.println("\nService Plans");
+                        System.out.println("-------------");
+                        for (ServicePlan plan : plans) {
+                            System.out.println("Plan type: " + plan.getPlanType() + ". " + "Description: " + plan.getPlanDescription() + ". " + "$" + plan.getPlanPrice());
+                        }
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                    break;
+                case 2:
+                    System.out.println("TODO: Add Submit a ticket method");
+                    break;
+                case 3:
+                    System.out.println("TODO: Add View my ticket");
+                    break;
+                case 9:
+                    System.out.println("Logging out, leaving employee menu...");
+                    break;
+                default:
+                    System.out.println("Invalid choice! Please select a valid option.");
+            }
+        } while (choice != 9);
+
+    }
+
+
+    // Technician menu
+    private static void showTechnicianMenu(Scanner scanner, User user, UserService userService, TicketService ticketService, ServicePlanService servicePlanService, CustomLogger logger) {
+        int choice;
+
+        do {
+            System.out.println("\n ======================");
+            System.out.println(" === Technician Menu ===");
+            System.out.println(" =======================");
+            System.out.println("\nChoose an option:");
+            System.out.println("\n1. View all Service Plans");
+            System.out.println("2. View open tickets");
+            System.out.println("3. Claim a ticket");
+            System.out.println("9. Logout");
+            System.out.print("\nEnter your choice: ");
+
+            // Validate input
+            while (!scanner.hasNextInt()) {
+                System.out.println("\nInvalid input! Please enter a number.");
+                scanner.next();
+            }
+
+            choice = scanner.nextInt();
+            scanner.nextLine(); // Consume newline
+
+            switch (choice) {
+                case 1:
+                    try {
+                        List<ServicePlan> plans = servicePlanService.getAllServicePlans();
+                        for (ServicePlan plan : plans) {
+                            System.out.println("\n" + plan);
+                        }
+                    } catch (SQLException e) {
+                        logger.logInfo("No service plans to display" + e.getMessage());
+                    }
+                    break;
+                case 2:
+                    System.out.println("TODO: Add View open tickets method");
+                    break;
+                case 3:
+                    System.out.println("TODO: Add Claim a ticket method");
+                    break;
+                case 9:
+                    System.out.println("Logging out, leaving technician menu...");
+                    break;
+                default:
+                    System.out.println("Invalid choice! Please select a valid option.");
+            }
+        } while (choice != 9);
+    }
+
+    // Admin menu with minimal implementation
+    private static void showAdminMenu(Scanner scanner, User user, UserService userService, ServicePlanService servicePlanService, TicketService ticketService) {
+        int choice;
+
+        do {
+            System.out.println("\n==================");
+            System.out.println(" === Admin Menu ===");
+            System.out.println(" ==================");
+            System.out.println("\n  Choose an option");
+            System.out.println("\n1. Add a Service Plan");
+            System.out.println("2. View all Service Plans");
+            System.out.println("3. View all users");
+            System.out.println("4. View all tickets");
+            System.out.println("5. Delete user");
+            System.out.println("6. View total stock value");
+            System.out.println("7. View total revenue");
+            System.out.println("9. Logout");
+            System.out.print("\n Enter your choice: ");
+
+            // Validate input
+            while (!scanner.hasNextInt()) {
+                System.out.println("\nInvalid input! Please enter a number.");
                 scanner.next();
             }
 
@@ -120,25 +232,38 @@ public class HelpDeskApp {
                 case 1:
                     addServicePlan(scanner, servicePlanService);
                     break;
+                case 2:
+                    try {
+                        List<ServicePlan> plans = servicePlanService.getAllServicePlans();
+                        for (ServicePlan plan : plans) {
+                            System.out.println("\n" + plan);
+                        }
+                    } catch (SQLException e) {
+                        System.out.println(e.getMessage());
+                    }
+                    break;
+                case 3:
+                    System.out.println("TODO: Add View all users method");
+                    break;
+                case 4:
+                    System.out.println("TODO: Add View all tickets method");
+                    break;
+                case 5:
+                    System.out.println("TODO: Add Delete user method");
+                    break;
+                case 6:
+                    System.out.println("TODO: Add View total stock value method");
+                    break;
+                case 7:
+                    System.out.println("TODO: Add View total revenue method");
+                    break;
                 case 9:
-                    System.out.println("Leaving employee menu...");
+                    System.out.println("logging out, leaving admin menu...");
                     break;
                 default:
                     System.out.println("Invalid choice! Please select a valid option.");
             }
         } while (choice != 9);
-
-    }
-
-
-    // Placeholder for Technician menu
-    private static void showTechnicianMenu(Scanner scanner, User user, UserService userService, TicketService ticketService) {
-        System.out.println("Technician menu under construction.");
-    }
-
-    // Admin menu with minimal implementation
-    private static void showAdminMenu(Scanner scanner, User user, UserService userService, ServicePlanService servicePlanService, TicketService ticketService) {
-        System.out.println("Admin menu under construction.");
     }
 
     // Minimal implementation of adding a new user
@@ -165,7 +290,7 @@ public class HelpDeskApp {
         }
     }
 
-    private static void addServicePlan(Scanner scanner, ServicePlanService servicePlanService){
+    private static void addServicePlan(Scanner scanner, ServicePlanService servicePlanService) {
         System.out.println("Enter plan type: ");
         String planType = scanner.nextLine();
         System.out.println("Enter plan description: ");
@@ -178,11 +303,11 @@ public class HelpDeskApp {
         scanner.nextLine();
 
         ServicePlan servicePlan = new ServicePlan(planType, planDescription, planPrice, datePurchased, userId);
-        try{
+        try {
             servicePlanService.addServicePlan(servicePlan);
             System.out.println("Plan added successfully!");
-        } catch(SQLException e){
+        } catch (SQLException e) {
             System.out.println("Error adding plan: " + e.getMessage());
         }
     }
-        }
+}

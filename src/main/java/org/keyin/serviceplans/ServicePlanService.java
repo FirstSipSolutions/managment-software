@@ -3,6 +3,7 @@ package org.keyin.serviceplans;
 import org.keyin.customlogger.CustomLogger;
 
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * Service class is responsible for handling all business logic related to service plans.
@@ -19,6 +20,13 @@ public class ServicePlanService {
 
     public void addServicePlan(ServicePlan servicePlan) throws SQLException{
             dao.addServicePlan(servicePlan);
+            logger.logInfo("added service plan with DAO method");
+    }
+
+    public List<ServicePlan> getAllServicePlans() throws SQLException {
+        logger.logInfo("get all service plans with DAO method");
+        return dao.getAllServicePlans();
+
     }
 
 }
