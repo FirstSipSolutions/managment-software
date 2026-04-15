@@ -31,9 +31,9 @@ public class ServiceDAO {
             pstmt.setDate(4, Date.valueOf(servicePlan.getDatePurchased()));
             pstmt.setInt(5, servicePlan.getUserId());
             pstmt.executeUpdate();
-            logger.logInfo("Data inserted into database successfully");
+            logger.logInfo("Data inserted into database successfully.");
         } catch (SQLException e) {
-            logger.logError("Could not insert values into the database" + e.getMessage());
+            logger.logError("Could not insert values into the database." + e.getMessage());
         }
     }
 
@@ -53,13 +53,11 @@ public class ServiceDAO {
            int userId = result.getInt("user_id");
             plans.add(new ServicePlan(planType, planDescription, planPrice, datePurchased, userId));
         }
-
-            logger.logInfo("Data selected from database successfully");
+            logger.logInfo("Data added to list successfully.");
         } catch (SQLException e) {
-            logger.logError("Could retrieve values from the database" + e.getMessage());
+            logger.logError("Could retrieve values from the database." + e.getMessage());
         }
         return plans;
     }
-
 
 }
