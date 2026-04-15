@@ -20,10 +20,13 @@ public class ServicePlanService {
 
     public void addServicePlan(ServicePlan servicePlan) throws SQLException{
             dao.addServicePlan(servicePlan);
+            logger.logInfo("added service plan with DAO method");
     }
 
     public List<ServicePlan> getAllServicePlans() throws SQLException {
+        logger.logInfo("get all service plans with DAO method");
         return dao.getAllServicePlans();
+
     }
 
 }
