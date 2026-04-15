@@ -41,6 +41,7 @@ public class HardwareProductsDAO {
 
 
     // todo: Returns all hardware items -- ALL ROLES
+
     // todo: note that the rs = executeQuery will send select to the DB and return the result set.
 
     public List<HardwareProducts> getAllItems() throws SQLException {
@@ -68,3 +69,57 @@ public class HardwareProductsDAO {
     }
 }
 
+// todo: this will handle the total value of stock
+
+// todo: this will be used by ADMIN for reporting
+
+public double getTotalStockValue() throws SQLException {
+    String sql = "SELECT SUM(item_price * quantity_in_stock) AS total_value FROM hardware_inventory";
+
+    try (Connection conn = DatabaseConnection.getConnection();
+         PreparedStatement pstmt = conn.prepareStatement(sql);
+         ResultSet rs = pstmt.executeQuery()) {
+
+
+        if (rs.next()) {
+
+                        logger.logInfo("getTotalStockValue called");
+            return rs.getDouble("total_value");
+        }
+    } catch (SQLException sqlException) {
+        logger.logError("Failed to get total stock value: " + sqlException.getMessage());
+    }
+    return 0;
+}
+
+// this will handle the item deleted by ID
+// todo: this will be used by ADMIN
+
+public void deleteItem(int itemId) throws SQLException {
+    String sql = "DELETE FROM hardware_inventory WHERE id = ?";
+
+    try (Connection conn = DatabaseConnection.getConnection();
+         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        pstmt.setInt(1, itemId);
+        pstmt.executeUpdate();
+
+        logger.logInfo("Hardware item deleted: " + itemId);
+    } catch (SQLException sqlException) {
+
+        logger.logError("Failed to delete hardware item, item id you tried was: " + itemId + " " + sqlException.getMessage());
+    }
+}
+
+// todo: this maps DB rows to the HardwareProducts object
+
+private HardwareProducts mapRow(ResultSet rs) throws SQLException {
+    return new HardwareProducts(
+
+            rs.getInt("id"),
+            rs.getString("item_name"),
+            rs.getString("item_type"),
+            rs.getDouble("item_price"),
+            rs.getInt("quantity_in_stock")
+    );
+}
+}
