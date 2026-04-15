@@ -46,12 +46,10 @@ public class ServiceDAO {
             pstmt.setDate(4, Date.valueOf(servicePlan.getDatePurchased()));
             pstmt.setInt(5, servicePlan.getUserId());
             pstmt.executeUpdate();
-            logger.logInfo("Data inserted into database successfully");
+            logger.logInfo("Data selected from database successfully");
         } catch(SQLException e){
-            logger.logError("Could not insert values into the database");
-            e.printStackTrace();
+            logger.logError("Could retrieve values from the database" + e.getMessage());
         }
     }
-
 
 }
