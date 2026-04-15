@@ -32,8 +32,26 @@ public class ServiceDAO {
             pstmt.executeUpdate();
             logger.logInfo("Data inserted into database successfully");
         } catch(SQLException e){
+            logger.logError("Could not insert values into the database" + e.getMessage());
+        }
+    }
+
+    public void getAllServicePlans(ServicePlan servicePlan){
+        String sql = "SELECT * FROM service_plans";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, servicePlan.getPlanType());
+            pstmt.setString(2, servicePlan.getPlanDescription());
+            pstmt.setFloat(3, servicePlan.getPlanPrice());
+            pstmt.setDate(4, Date.valueOf(servicePlan.getDatePurchased()));
+            pstmt.setInt(5, servicePlan.getUserId());
+            pstmt.executeUpdate();
+            logger.logInfo("Data inserted into database successfully");
+        } catch(SQLException e){
             logger.logError("Could not insert values into the database");
             e.printStackTrace();
         }
     }
+
+
 }
