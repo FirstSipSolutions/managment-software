@@ -15,7 +15,7 @@ public class HardwareProducts {
     // starting with name typew price and qty in stock
 
     public HardwareProducts(String itemName, String itemType, int itemId, int qty_inStock, double itemPrice){
-        this.itemId = itemId
+        this.itemId = itemId;
         this.itemName = itemName;
         this.itemType = itemType;
         this.qty_inStock = qty_inStock;
@@ -26,6 +26,16 @@ public class HardwareProducts {
 
     }
 
+    // forgot to add the constructor that will write to the DB
+    // this will include all the same variables
+
+    public HardwareProducts(int itemId, String itemName, String itemType, double itemPrice, int qty_inStock) {
+        this.itemId = itemId;
+        this.itemName = itemName;
+        this.itemType = itemType;
+        this.itemPrice = itemPrice;
+        this.qty_inStock = qty_inStock;
+    }
 
     public int getItemId() {
         return itemId;
