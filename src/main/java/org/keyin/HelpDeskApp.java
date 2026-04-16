@@ -4,6 +4,7 @@ import org.keyin.customlogger.CustomLogger;
 import org.keyin.serviceplans.ServicePlan;
 import org.keyin.serviceplans.ServicePlanService;
 import org.keyin.user.User;
+import org.keyin.user.UserDAO;
 import org.keyin.user.UserService;
 import org.keyin.tickets.TicketService;
 
@@ -18,8 +19,9 @@ public class HelpDeskApp {
         UserService userService = new UserService();
         ServicePlanService servicePlanService = new ServicePlanService();
         TicketService ticketService = new TicketService();
+        User user = new User();
 
-        // CustomLogger method to log info and errors to a text file.
+        // CustomLogger method to log information and errors to a text file.
         CustomLogger logger = new CustomLogger();
 
         // Scanner for user input
@@ -107,7 +109,7 @@ public class HelpDeskApp {
             System.out.println("\n   Choose an option");
             System.out.println("\n1. View Service Plans");
             System.out.println("2. Submit a ticket");
-            System.out.println("3.View my ticket");
+            System.out.println("3. View my ticket");
             System.out.println("9. Logout");
             System.out.print("\nEnter your choice: ");
 
@@ -243,7 +245,10 @@ public class HelpDeskApp {
                     }
                     break;
                 case 3:
-                    System.out.println("TODO: Add View all users method");
+                        List<User> users = userService.getAllUsers();
+                        for (User userlist : users) {
+                            System.out.println("\n" + userlist);
+                        }
                     break;
                 case 4:
                     System.out.println("TODO: Add View all tickets method");
