@@ -1,6 +1,7 @@
 package org.keyin.hardwareproduct;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public class HardwareProductsService {
 
@@ -8,7 +9,7 @@ public class HardwareProductsService {
 
     // still not the best at getting these to work
     // this will give us access to the DB
-    HardwareProductDAO hardwareProductsDAO = new HardwareProductDAO();
+    HardwareProductsDAO hardwareProductsDAO = new HardwareProductsDAO();
 
 
     // adding an item
@@ -21,7 +22,7 @@ public class HardwareProductsService {
     // role config for all roles
 
 
-    public list <HardwareProducts> getAllItems() throws SQLException {
+    public List <HardwareProducts> getAllItems() throws SQLException {
 
        return hardwareProductsDAO.getAllItems();
     }
@@ -32,7 +33,7 @@ public class HardwareProductsService {
 
 
     public void deleteItem(int itemId) throws SQLException {
-        hardwareProductsDAO.deleteItem();
+        hardwareProductsDAO.deleteItem(itemId);
     }
 
 
