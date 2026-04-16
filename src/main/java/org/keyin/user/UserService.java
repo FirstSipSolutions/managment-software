@@ -1,19 +1,23 @@
 package org.keyin.user;
 
+import org.keyin.customlogger.CustomLogger;
+import org.keyin.serviceplans.ServicePlan;
 import org.keyin.utils.PasswordUtil;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public class UserService {
 
     private UserDAO userDAO = new UserDAO();
+    CustomLogger logger = new CustomLogger();
 
     public UserService(){
     }
 
-    public UserService(String username, String password) throws SQLException {
-
-    }
+//    public UserService(String username, String password) throws SQLException {
+//
+//    }
 
     public User loginForUser(String username, String password) throws SQLException{
         User user = userDAO.getUserByUsername(username);
@@ -45,9 +49,17 @@ public class UserService {
 
         String hashed = PasswordUtil.hashPassword(user.getUser_password());
         user.setUser_password(hashed);
+        logger.logInfo("New user added");
         userDAO.addUser(user);
 
 
+
+    }
+
+    public List<User> getAllUsers()  {
+
+            logger.logInfo("Get all users");
+            return userDAO.getAllUsers();
 
     }
 }
