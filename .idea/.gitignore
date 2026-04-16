@@ -6,3 +6,9 @@
 # Datasource local storage ignored files
 /dataSources/
 /dataSources.local.xml
+target/
+.idea/
+*.iml
+.DS_Store
+*.class
+applicationlogs.txt
