@@ -28,12 +28,12 @@ public class User {
     private String user_phone;
     private String user_address;
 
-
-
     public User(){
 
+    }
 
-
+    public User(int user_id){
+        this.user_id = user_id;
     }
 
 
