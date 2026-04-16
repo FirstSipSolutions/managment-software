@@ -58,6 +58,16 @@ public class User {
         this.user_role = user_role;
     }
 
+    // Constructor to return user information without the password
+    public User(Integer user_id, String user_name, String user_email, String user_phone, String user_address, String user_role){
+        this.user_id = user_id;
+        this.user_name = user_name;
+        this.user_email = user_email;
+        this.user_phone = user_phone;
+        this.user_address = user_address;
+        this.user_role = user_role;
+    }
+
     public String getUser_role() {
         return user_role;
     }
@@ -103,7 +113,6 @@ public class User {
     public String getUser_phone() {
         return user_phone;
     }
-
 
     public void setUser_phone(String user_phone) {
         this.user_phone = user_phone;
