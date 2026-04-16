@@ -10,14 +10,9 @@ import java.util.List;
 public class UserService {
 
     private UserDAO userDAO = new UserDAO();
-    CustomLogger logger = new CustomLogger();
 
     public UserService(){
     }
-
-//    public UserService(String username, String password) throws SQLException {
-//
-//    }
 
     public User loginForUser(String username, String password) throws SQLException{
         User user = userDAO.getUserByUsername(username);
@@ -45,21 +40,27 @@ public class UserService {
 
     public void addUser(User user) throws SQLException{
 
-
-
         String hashed = PasswordUtil.hashPassword(user.getUser_password());
         user.setUser_password(hashed);
-        logger.logInfo("New user added");
         userDAO.addUser(user);
-
-
 
     }
 
     public List<User> getAllUsers()  {
 
-            logger.logInfo("Get all users");
             return userDAO.getAllUsers();
+
+    }
+
+    public void deleteUser(int userId) throws SQLException {
+
+        userDAO.deleteUser(userId);
+
+    }
+
+    public void updateUser(User user) throws SQLException{
+
+        userDAO.updateUser(user);
 
     }
 }
