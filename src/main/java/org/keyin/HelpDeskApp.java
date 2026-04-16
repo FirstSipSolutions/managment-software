@@ -1,6 +1,7 @@
 package org.keyin;
 
 import org.keyin.customlogger.CustomLogger;
+import org.keyin.serviceplans.ServiceDAO;
 import org.keyin.serviceplans.ServicePlan;
 import org.keyin.serviceplans.ServicePlanService;
 import org.keyin.user.User;
@@ -66,7 +67,7 @@ public class HelpDeskApp {
     }
 
     private static void logInAsUser(Scanner scanner, UserService userService, ServicePlanService servicePlanService, TicketService ticketService, CustomLogger logger) {
-        System.out.print("Enter username: ");
+        System.out.print("\nEnter username: ");
         String username = scanner.nextLine();
         System.out.print("Enter password: ");
         String password = scanner.nextLine();
@@ -142,10 +143,10 @@ public class HelpDeskApp {
                     System.out.println("TODO: Add View my ticket");
                     break;
                 case 9:
-                    System.out.println("Logging out, leaving employee menu...");
+                    System.out.println("\nLogging out, leaving employee menu...");
                     break;
                 default:
-                    System.out.println("Invalid choice! Please select a valid option.");
+                    System.out.println("\nInvalid choice! Please select a valid option.");
             }
         } while (choice != 9);
 
@@ -194,10 +195,10 @@ public class HelpDeskApp {
                     System.out.println("TODO: Add Claim a ticket method");
                     break;
                 case 9:
-                    System.out.println("Logging out, leaving technician menu...");
+                    System.out.println("\nLogging out, leaving technician menu...");
                     break;
                 default:
-                    System.out.println("Invalid choice! Please select a valid option.");
+                    System.out.println("\nInvalid choice! Please select a valid option.");
             }
         } while (choice != 9);
     }
@@ -207,7 +208,7 @@ public class HelpDeskApp {
         int choice;
 
         do {
-            System.out.println("\n==================");
+            System.out.println("\n ==================");
             System.out.println(" === Admin Menu ===");
             System.out.println(" ==================");
             System.out.println("\n  Choose an option");
@@ -219,12 +220,12 @@ public class HelpDeskApp {
             System.out.println("6. View total stock value");
             System.out.println("7. View total revenue");
             System.out.println("9. Logout");
-            System.out.print("\n Enter your choice: ");
+            System.out.println();
+            System.out.print("Enter your choice: ");
 
             // Validate input
             while (!scanner.hasNextInt()) {
                 System.out.println("\nInvalid input! Please enter a number.");
-                scanner.next();
             }
 
             choice = scanner.nextInt();
@@ -254,7 +255,7 @@ public class HelpDeskApp {
                     System.out.println("TODO: Add View all tickets method");
                     break;
                 case 5:
-                    System.out.println("TODO: Add Delete user method");
+                        deleteUser(scanner, userService);
                     break;
                 case 6:
                     System.out.println("TODO: Add View total stock value method");
@@ -263,17 +264,18 @@ public class HelpDeskApp {
                     System.out.println("TODO: Add View total revenue method");
                     break;
                 case 9:
-                    System.out.println("logging out, leaving admin menu...");
+                    System.out.println("\nlogging out, leaving admin menu...");
                     break;
                 default:
-                    System.out.println("Invalid choice! Please select a valid option.");
+                    System.out.println("\nInvalid choice! Please select a valid option.");
             }
         } while (choice != 9);
     }
 
+    // User methods start here
     // Minimal implementation of adding a new user
     private static void addNewUser(Scanner scanner, UserService userService) {
-        System.out.print("Enter username: ");
+        System.out.print("\nEnter username: ");
         String username = scanner.nextLine();
         System.out.print("Enter password: ");
         String password = scanner.nextLine();
@@ -289,14 +291,27 @@ public class HelpDeskApp {
         User user = new User(username, password, email, phone, address, role);
         try {
             userService.addUser(user);
-            System.out.println("User added successfully!");
+            System.out.println("\nUser added successfully!");
         } catch (SQLException e) {
-            System.out.println("Error adding user: " + e.getMessage());
+            System.out.println("\nError adding user: " + e.getMessage());
         }
     }
 
+    private static void deleteUser(Scanner scanner, UserService userService){
+        System.out.print("Enter user id: ");
+        int userId = scanner.nextInt();
+        try{
+            userService.deleteUser(userId);
+            System.out.println("User deleted, Id: " + userId);
+        } catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+
+    }
+
+    // Service methods start here
     private static void addServicePlan(Scanner scanner, ServicePlanService servicePlanService) {
-        System.out.println("Enter plan type: ");
+        System.out.println("\nEnter plan type: ");
         String planType = scanner.nextLine();
         System.out.println("Enter plan description: ");
         String planDescription = scanner.nextLine();
