@@ -1,11 +1,9 @@
 package org.keyin;
 
 import org.keyin.customlogger.CustomLogger;
-import org.keyin.serviceplans.ServiceDAO;
 import org.keyin.serviceplans.ServicePlan;
 import org.keyin.serviceplans.ServicePlanService;
 import org.keyin.user.User;
-import org.keyin.user.UserDAO;
 import org.keyin.user.UserService;
 import org.keyin.tickets.TicketService;
 
@@ -18,6 +16,7 @@ public class HelpDeskApp {
     public static void main(String[] args) throws SQLException {
         // Initialize services
         UserService userService = new UserService();
+        ServicePlan servicePlan = new ServicePlan();
         ServicePlanService servicePlanService = new ServicePlanService();
         TicketService ticketService = new TicketService();
         User user = new User();
@@ -51,7 +50,7 @@ public class HelpDeskApp {
                     addNewUser(scanner, userService);
                     break;
                 case 2:
-                    logInAsUser(scanner, userService, servicePlanService, ticketService, logger);
+                    logInAsUser(scanner, userService, servicePlanService, ticketService, logger, servicePlan);
                     break;
                 case 9:
                     System.out.println("\nExiting the program...");
@@ -66,7 +65,7 @@ public class HelpDeskApp {
         scanner.close();
     }
 
-    private static void logInAsUser(Scanner scanner, UserService userService, ServicePlanService servicePlanService, TicketService ticketService, CustomLogger logger) {
+    private static void logInAsUser(Scanner scanner, UserService userService, ServicePlanService servicePlanService, TicketService ticketService, CustomLogger logger, ServicePlan servicePlan) {
         System.out.print("\nEnter username: ");
         String username = scanner.nextLine();
         System.out.print("Enter password: ");
@@ -78,7 +77,7 @@ public class HelpDeskApp {
                 System.out.println("\nLogin Successful! Welcome " + user.getUser_name());
                 switch (user.getUser_role().toLowerCase()) {
                     case "admin":
-                        showAdminMenu(scanner, user, userService, servicePlanService, ticketService);
+                        showAdminMenu(scanner, user, userService, servicePlanService, ticketService, servicePlan);
                         break;
                     case "technician":
                         showTechnicianMenu(scanner, user, userService, ticketService, servicePlanService, logger);
@@ -204,7 +203,7 @@ public class HelpDeskApp {
     }
 
     // Admin menu with minimal implementation
-    private static void showAdminMenu(Scanner scanner, User user, UserService userService, ServicePlanService servicePlanService, TicketService ticketService) {
+    private static void showAdminMenu(Scanner scanner, User user, UserService userService, ServicePlanService servicePlanService, TicketService ticketService, ServicePlan servicePlan) {
         int choice;
 
         do {
@@ -213,13 +212,24 @@ public class HelpDeskApp {
             System.out.println(" ==================");
             System.out.println("\n  Choose an option");
             System.out.println("\n1. Add a Service Plan");
-            System.out.println("2. View all Service Plans");
-            System.out.println("3. View all users");
-            System.out.println("4. View all tickets");
-            System.out.println("5. Delete user");
-            System.out.println("6. View total stock value");
-            System.out.println("7. View total revenue");
-            System.out.println("9. Logout");
+            System.out.println("2. Update Service Plan");
+            System.out.println("3. Delete Service Plan");
+            System.out.println("4. View all Service Plans");
+            System.out.println("5. Add user");
+            System.out.println("6. Update user");
+            System.out.println("7. Delete user");
+            System.out.println("8. View all users");
+            System.out.println("9. Add a ticket");
+            System.out.println("10. Update a ticket");
+            System.out.println("11. Delete a ticket");
+            System.out.println("12. View all tickets");
+            System.out.println("13. Add a product");
+            System.out.println("14. Update a product");
+            System.out.println("15. Delete a product");
+            System.out.println("16. View all products");
+            System.out.println("17. View total stock value");
+            System.out.println("18. View total revenue");
+            System.out.println("20. Logout");
             System.out.println();
             System.out.print("Enter your choice: ");
 
@@ -229,13 +239,19 @@ public class HelpDeskApp {
             }
 
             choice = scanner.nextInt();
-            scanner.nextLine(); // Consume newline
+            scanner.nextLine();
 
             switch (choice) {
                 case 1:
                     addServicePlan(scanner, servicePlanService);
                     break;
                 case 2:
+                    updateServicePlan(scanner, servicePlanService);
+                    break;
+                case 3:
+                    deleteServicePlan(scanner, servicePlanService);
+                    break;
+                case 4:
                     try {
                         List<ServicePlan> plans = servicePlanService.getAllServicePlans();
                         for (ServicePlan plan : plans) {
@@ -245,31 +261,57 @@ public class HelpDeskApp {
                         System.out.println(e.getMessage());
                     }
                     break;
-                case 3:
-                        List<User> users = userService.getAllUsers();
-                        for (User userlist : users) {
-                            System.out.println("\n" + userlist);
-                        }
-                    break;
-                case 4:
-                    System.out.println("TODO: Add View all tickets method");
-                    break;
                 case 5:
-                        deleteUser(scanner, userService);
+                    addNewUser(scanner, userService);
                     break;
                 case 6:
-                    System.out.println("TODO: Add View total stock value method");
+                    updateUser(scanner, userService);
                     break;
                 case 7:
-                    System.out.println("TODO: Add View total revenue method");
+                    deleteUser(scanner, userService);
+                    break;
+                case 8:
+                    List<User> users = userService.getAllUsers();
+                    for (User userlist : users) {
+                        System.out.println("\n" + userlist);
+                    }
                     break;
                 case 9:
+                    System.out.println("TODO: Add a ticket");
+                    break;
+                case 10:
+                    System.out.println("TODO: Update a ticked");
+                    break;
+                case 11:
+                    System.out.println("TODO: Delete a ticked");
+                    break;
+                case 12:
+                    System.out.println("TODO: View all tickets");
+                    break;
+                case 13:
+                    System.out.println("TODO: Add product");
+                    break;
+                case 14:
+                    System.out.println("TODO: Update a product");
+                    break;
+                case 15:
+                    System.out.println("TODO: Delete a product");
+                    break;
+                case 16:
+                    System.out.println("TODO: View all products");
+                    break;
+                case 17:
+                    System.out.println("TODO: View total stock value");
+                    break;
+                case 18:
+                    System.out.println("TODO: View total revenue");
+                case 20:
                     System.out.println("\nlogging out, leaving admin menu...");
                     break;
                 default:
                     System.out.println("\nInvalid choice! Please select a valid option.");
             }
-        } while (choice != 9);
+        } while (choice != 20);
     }
 
     // User methods start here
@@ -297,20 +339,50 @@ public class HelpDeskApp {
         }
     }
 
-    private static void deleteUser(Scanner scanner, UserService userService){
+    private static void deleteUser(Scanner scanner, UserService userService) {
         System.out.print("Enter user id: ");
         int userId = scanner.nextInt();
-        try{
+        try {
             userService.deleteUser(userId);
             System.out.println("User deleted, Id: " + userId);
-        } catch(SQLException e){
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
 
     }
 
+    private static void updateUser(Scanner scanner, UserService userService) {
+        System.out.print("\nEnter the ID of the user you want to update: ");
+        int userId = scanner.nextInt();
+        scanner.nextLine();
+        System.out.print("Enter new username: ");
+        String username = scanner.nextLine();
+        System.out.print("Enter new password: ");
+        String password = scanner.nextLine();
+        System.out.print("Enter new email: ");
+        String email = scanner.nextLine();
+        System.out.print("Enter new phone: ");
+        String phone = scanner.nextLine();
+        System.out.print("Enter new address: ");
+        String address = scanner.nextLine();
+        System.out.print("Enter new role (ADMIN/TECHNICIAN/EMPLOYEE): ");
+        String role = scanner.nextLine();
+
+        User updatedUser = new User(username, password, email, phone, address, role);
+
+        updatedUser.setUser_id(userId);
+
+        try {
+            userService.updateUser(updatedUser);
+            System.out.println("\nUpdate request completed for User ID: " + userId);
+        } catch (SQLException e) {
+            System.out.println("\nError updating user: " + e.getMessage());
+        }
+    }
+
     // Service methods start here
     private static void addServicePlan(Scanner scanner, ServicePlanService servicePlanService) {
+
         System.out.println("\nEnter plan type: ");
         String planType = scanner.nextLine();
         System.out.println("Enter plan description: ");
@@ -328,6 +400,42 @@ public class HelpDeskApp {
             System.out.println("Plan added successfully!");
         } catch (SQLException e) {
             System.out.println("Error adding plan: " + e.getMessage());
+        }
+    }
+
+    private static void deleteServicePlan(Scanner scanner, ServicePlanService servicePlanService){
+
+        System.out.print("Enter plan id: ");
+        int planId = scanner.nextInt();
+
+        try {
+            servicePlanService.deleteService(planId);
+            System.out.println("Service plan deleted, Id: " + planId);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private static void updateServicePlan(Scanner scanner, ServicePlanService servicePlanService) {
+        System.out.print("\nEnter the ID of the service plan you want to update: ");
+        int planId = scanner.nextInt();
+        scanner.nextLine();
+        System.out.print("Enter new plan type: ");
+        String planType = scanner.nextLine();
+        System.out.print("Enter new description: ");
+        String description = scanner.nextLine();
+        System.out.print("Enter new plan price: ");
+        Float planPrice = scanner.nextFloat();
+        scanner.nextLine();
+
+
+        ServicePlan updatedServicePlan = new ServicePlan(planId, planType, description, planPrice);
+
+        try {
+            servicePlanService.updateService(updatedServicePlan);
+            System.out.println("\nUpdate request completed for Service plan ID: " + planId);
+        } catch (SQLException e) {
+            System.out.println("\nError updating service plan: " + e.getMessage());
         }
     }
 }
