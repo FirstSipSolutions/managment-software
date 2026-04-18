@@ -449,11 +449,33 @@ public class HelpDeskApp {
                 System.out.println("ID: " + t.getTicket_id() + " : " + t.getTitle() + "  Priority: " + t.getPriority() + "  Submitted by: " + t.getSubmittedBy());
             }
         } catch (SQLException e) {
-            System.out.println(nError retrieving open tickets: " + e.getMessage());
+            System.out.println("Error retrieving open tickets: " + e.getMessage());
         }
     }
+// updating tickets here
+    // this caused error bug due to \n l;ew line error
+private static void updateTicketStatus(Scanner scanner, TicketService ticketService) {
+    System.out.print("Enter ticket ID to update:");
+    // this all tackes scanner entry
 
+    int ticketId = scanner.nextInt();
+    scanner.nextLine();
 
+// print out status entry
+    System.out.print("Enter new status (Open/In Progress/Resolved/Closed):");
+    String newStatus = scanner.nextLine();
+// try catch
+    try {
+        ticketService.updateStatus(ticketId, newStatus);
+
+        System.out.println("Ticket " + ticketId + " updated to: " + newStatus);
+    }
+
+    catch (SQLException e) {
+
+        System.out.println("Error updating ticket: " + e.getMessage());
+    }
+}
 
 
 
