@@ -192,10 +192,11 @@ public class HelpDeskApp {
                     }
                     break;
                 case 2:
-                    System.out.println("TODO: Add View open tickets method");
+                    viewOpenTickets(ticketService);
                     break;
                 case 3:
-                    System.out.println("TODO: Add Claim a ticket method");
+                    updateTicketStatus(scanner, ticketService);
+
                     break;
                 case 9:
                     System.out.println("\nLogging out, leaving technician menu...");
@@ -429,8 +430,28 @@ public class HelpDeskApp {
         }
     }
 
+// view open ti cket method
 
 
+    private static void viewOpenTickets(TicketService ticketService) {
+        try {
+            List<Ticket> tickets = ticketService.getOpenTickets();
+
+            if (tickets.isEmpty()) {
+
+                System.out.println("No open tickets.");
+                return;
+            }
+            System.out.println("Open Tickets");
+            System.out.println("==========");
+
+            for (Ticket t : tickets) {
+                System.out.println("ID: " + t.getTicket_id() + " : " + t.getTitle() + "  Priority: " + t.getPriority() + "  Submitted by: " + t.getSubmittedBy());
+            }
+        } catch (SQLException e) {
+            System.out.println(nError retrieving open tickets: " + e.getMessage());
+        }
+    }
 
 
 
