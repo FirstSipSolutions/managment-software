@@ -256,7 +256,8 @@ public class HelpDeskApp {
                         }
                     break;
                 case 4:
-                    System.out.println("TODO: Add View all tickets method");
+                    viewAllTickets(ticketService);
+
                     break;
                 case 5:
                         deleteUser(scanner, userService);
@@ -471,7 +472,7 @@ private static void updateTicketStatus(Scanner scanner, TicketService ticketServ
         System.out.println("Ticket " + ticketId + " updated to: " + newStatus);
     }
 
-    catch (SQLException e) {
+    catch (SQLException exception) {
 
         System.out.println("Error updating ticket: " + e.getMessage());
     }
