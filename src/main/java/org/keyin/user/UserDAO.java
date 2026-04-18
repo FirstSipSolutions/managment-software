@@ -10,7 +10,6 @@ import java.util.List;
 
 public class UserDAO {
     CustomLogger logger = new CustomLogger();
-    User users = new User();
     // remapped this to username from user_name
 
     public User getUserByUsername(String user_name) throws SQLException {
@@ -112,20 +111,20 @@ public class UserDAO {
     }
 
     public void updateUser(User user) {
-        String sql = "UPDATE users SET username = ?, email = ?, phone_number = ?, address = ?, user_role = ? WHERE id = ?";
+        String sql = "UPDATE users SET username = ?, password_hash = ?, email = ?, phone_number = ?, address = ?, user_role = ? WHERE id = ?";
 
         try(Connection conn = DatabaseConnection.getConnection();
-            PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
+            PreparedStatement pstmt = conn.prepareStatement(sql))
+        {
                 pstmt.setString(1, user.getUser_name());
-                pstmt.setString(2, user.getUser_email());
-                pstmt.setString(3, user.getUser_phone());
-                pstmt.setString(4, user.getUser_address());
-                pstmt.setString(5, user.getUser_role());
+                pstmt.setString(2, user.getUser_password());
+                pstmt.setString(3, user.getUser_email());
+                pstmt.setString(4, user.getUser_phone());
+                pstmt.setString(5, user.getUser_address());
+                pstmt.setString(6, user.getUser_role());
 
-                pstmt.setInt(6, user.getUser_id());
+                pstmt.setInt(7, user.getUser_id());
                 int rowsUpdated = pstmt.executeUpdate();
-
 
                 if (rowsUpdated > 0) {
 
@@ -135,7 +134,7 @@ public class UserDAO {
 
                     logger.logError("Update failed. No user found with ID: " + user.getUser_id());
                 }
-            }
+        }
             catch (SQLException e){
 
                 logger.logError("SQL, error updating user id " + user.getUser_id() + "," + e.getMessage());
