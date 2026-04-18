@@ -265,19 +265,7 @@ public class HelpDeskApp {
                         System.out.println(e.getMessage());
                     }
                     break;
-<<<<<<< HEAD
-                case 3:
-                        List<User> users = userService.getAllUsers();
-                        for (User userlist : users) {
-                            System.out.println("\n" + userlist);
-                        }
-                    break;
-                case 4:
-                    viewAllTickets(ticketService);
 
-                    break;
-=======
->>>>>>> 728275f434de8fa5c58cb5b7a8352b125ffbc76f
                 case 5:
                     addNewUser(scanner, userService);
                     break;
@@ -558,7 +546,7 @@ private static void updateTicketStatus(Scanner scanner, TicketService ticketServ
 
     catch (SQLException exception) {
 
-        System.out.println("Error updating ticket: " + e.getMessage());
+        System.out.println("Error updating ticket: " + exception.getMessage());
     }
 }
 
