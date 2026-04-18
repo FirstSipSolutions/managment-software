@@ -191,10 +191,11 @@ public class HelpDeskApp {
                     }
                     break;
                 case 2:
-                    System.out.println("TODO: Add View open tickets method");
+                    viewOpenTickets(ticketService);
                     break;
                 case 3:
-                    System.out.println("TODO: Add Claim a ticket method");
+                    updateTicketStatus(scanner, ticketService);
+
                     break;
                 case 9:
                     System.out.println("\nLogging out, leaving technician menu...");
@@ -264,6 +265,7 @@ public class HelpDeskApp {
                         System.out.println(e.getMessage());
                     }
                     break;
+
                 case 5:
                     addNewUser(scanner, userService);
                     break;
@@ -501,10 +503,52 @@ public class HelpDeskApp {
         }
     }
 
+// view open ti cket method
 
 
+    private static void viewOpenTickets(TicketService ticketService) {
+        try {
+            List<Ticket> tickets = ticketService.getOpenTickets();
 
+            if (tickets.isEmpty()) {
 
+                System.out.println("No open tickets.");
+                return;
+            }
+            System.out.println("Open Tickets");
+            System.out.println("==========");
+
+            for (Ticket t : tickets) {
+                System.out.println("ID: " + t.getTicket_id() + " : " + t.getTitle() + "  Priority: " + t.getPriority() + "  Submitted by: " + t.getSubmittedBy());
+            }
+        } catch (SQLException e) {
+            System.out.println("Error retrieving open tickets: " + e.getMessage());
+        }
+    }
+// updating tickets here
+    // this caused error bug due to \n l;ew line error
+private static void updateTicketStatus(Scanner scanner, TicketService ticketService) {
+    System.out.print("Enter ticket ID to update:");
+    // this all tackes scanner entry
+
+    int ticketId = scanner.nextInt();
+    scanner.nextLine();
+
+// print out status entry
+    System.out.print("Enter new status (Open/In Progress/Resolved/Closed):");
+    String newStatus = scanner.nextLine();
+// try catch
+    try {
+        ticketService.updateStatus(ticketId, newStatus);
+
+        System.out.println("Ticket " + ticketId + " updated to: " + newStatus);
+    }
+
+    catch (SQLException exception) {
+
+        System.out.println("Error updating ticket: " + exception.getMessage());
+    }
+}
 
 
 
