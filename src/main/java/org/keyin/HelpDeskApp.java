@@ -12,6 +12,9 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
 
+
+import org.keyin.tickets.Ticket;
+
 public class HelpDeskApp {
     public static void main(String[] args) throws SQLException {
         // Initialize services
@@ -83,7 +86,7 @@ public class HelpDeskApp {
                         showTechnicianMenu(scanner, user, userService, ticketService, servicePlanService, logger);
                         break;
                     case "employee":
-                        showEmployeeMenu(scanner, user, userService, servicePlanService);
+                        showEmployeeMenu(scanner, user, userService, servicePlanService, ticketService);
                         break;
                     default:
 
@@ -99,7 +102,7 @@ public class HelpDeskApp {
     }
 
     // Employee menu
-    private static void showEmployeeMenu(Scanner scanner, User user, UserService userService, ServicePlanService servicePlanService) {
+    private static void showEmployeeMenu(Scanner scanner, User user, UserService userService, ServicePlanService servicePlanService, TicketService ticketService) {
         int choice;
 
         do {
@@ -136,10 +139,10 @@ public class HelpDeskApp {
                     }
                     break;
                 case 2:
-                    System.out.println("TODO: Add Submit a ticket method");
+                    submitTicket(scanner, user, ticketService);
                     break;
                 case 3:
-                    System.out.println("TODO: Add View my ticket");
+                    viewMyTickets(user, ticketService);
                     break;
                 case 9:
                     System.out.println("\nLogging out, leaving employee menu...");
@@ -401,6 +404,7 @@ public class HelpDeskApp {
         } catch (SQLException e) {
             System.out.println("Error adding plan: " + e.getMessage());
         }
+
     }
 
     private static void deleteServicePlan(Scanner scanner, ServicePlanService servicePlanService){
@@ -438,4 +442,71 @@ public class HelpDeskApp {
             System.out.println("\nError updating service plan: " + e.getMessage());
         }
     }
+        // added submitTIcket portion here
+        // ticket submission needs a handler and method
+        // this is adding the ticket service Subticket method
+
+        private static void submitTicket(Scanner scanner, User user, TicketService ticketService ) {
+
+            System.out.print("\nEnter ticket title: ");
+            String title = scanner.nextLine();
+
+
+            System.out.print("Enter description: ");
+            String description = scanner.nextLine();
+
+            System.out.print("Enter category (Hardware/Software/Network/Account Access): ");
+            String category = scanner.nextLine();
+            System.out.print("Enter priority (Low/Medium/High/Critical): ");
+            String priority = scanner.nextLine();
+
+
+            Ticket ticket = new Ticket(title, description, category, priority, "Open", user.getUser_id());
+
+            try {
+
+
+                ticketService.subTicket(ticket);
+                System.out.println(" Ticket submitted successfully!");
+            } catch (SQLException e) {
+                System.out.println(" Error submitting ticket: " + e.getMessage());
+
+
+            }
+
+
+        }
+                private static void viewMyTickets(User user, TicketService ticketService) {
+
+
+        try {
+            List<Ticket> tickets = ticketService.getMyTicket(user.getUser_id());
+            if (tickets.isEmpty()) {
+                System.out.println(" No tickets found.");
+                return;
+            }
+
+
+            System.out.println("\nYour Tickets");
+            System.out.println(" ============ ");
+            for (Ticket t : tickets) {
+                System.out.println("ID: " + t.getTicket_id() + " : " + t.getTitle() + " : Status: " + t.getStatus() + " Priority: " + t.getPriority());
+            }
+
+
+
+
+        } catch (SQLException e) {
+            System.out.println("Error retrieving tickets: " + e.getMessage());
+        }
+    }
+
+
+
+
+
+
+
+
+
 }
