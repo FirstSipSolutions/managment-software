@@ -1,6 +1,7 @@
 package org.keyin.serviceplans;
 
 import org.keyin.customlogger.CustomLogger;
+import org.keyin.user.User;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -15,17 +16,29 @@ import java.util.List;
  */
 public class ServicePlanService {
 
-    CustomLogger logger = new CustomLogger();
-    ServiceDAO dao = new ServiceDAO();
+    ServiceDAO serviceDAO = new ServiceDAO();
 
     public void addServicePlan(ServicePlan servicePlan) throws SQLException{
-            dao.addServicePlan(servicePlan);
-            logger.logInfo("added service plan with DAO method");
+
+            serviceDAO.addServicePlan(servicePlan);
+
     }
 
     public List<ServicePlan> getAllServicePlans() throws SQLException {
-        logger.logInfo("get all service plans with DAO method");
-        return dao.getAllServicePlans();
+
+        return serviceDAO.getAllServicePlans();
+
+    }
+
+    public void deleteService(int serviceId) throws SQLException {
+
+        serviceDAO.deleteService(serviceId);
+
+    }
+
+    public void updateService(ServicePlan servicePlan) throws SQLException{
+
+        serviceDAO.updateService(servicePlan);
 
     }
 
