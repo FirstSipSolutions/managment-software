@@ -5,7 +5,9 @@ import org.keyin.user.User;
 import java.time.LocalDate;
 
 public class ServicePlan extends User {
+
     // Instance variables
+    private int planId;
     private String planType;
     private String planDescription;
     private Float planPrice;
@@ -16,12 +18,37 @@ public class ServicePlan extends User {
     public ServicePlan(){
     }
 
+    public ServicePlan(int planId, String planType, String planDescription, Float planPrice){
+        this.planId = planId;
+        this.planType = planType;
+        this.planDescription = planDescription;
+        this.planPrice = planPrice;
+    }
+
+    public ServicePlan(int planId, String planType, String planDescription, Float planPrice, int userId) {
+        this.planId = planId;
+        this.planType = planType;
+        this.planDescription = planDescription;
+        this.planPrice = planPrice;
+        this.userId = userId;
+    }
+
+
     public ServicePlan(String planType, String planDescription, Float planPrice, LocalDate datePurchased, int userId) {
+
         this.planType = planType;
         this.planDescription = planDescription;
         this.planPrice = planPrice;
         this.datePurchased = datePurchased;
         this.userId = userId;
+    }
+
+    public int getPlanId() {
+        return planId;
+    }
+
+    public void setPlanId(int planId) {
+        this.planId = planId;
     }
 
     public String getPlanType() {
@@ -67,6 +94,6 @@ public class ServicePlan extends User {
 
     @Override
     public String toString() {
-        return ("Plan type: " + this.planType + ", " + "Description: " + this.planDescription + ", " + " Price: " + this.planPrice + ",  " + " Date purchased:" +  this.datePurchased + ", " + " User ID: " + this.userId);
+        return ("Plan type: " + this.planType + ", " + "Description: " + this.planDescription + ", " + "Price: " + this.planPrice + ", " + "Date purchased: " +  this.datePurchased + ", " + "User ID: " + this.userId);
     }
 }
