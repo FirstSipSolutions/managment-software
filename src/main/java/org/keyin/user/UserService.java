@@ -60,6 +60,8 @@ public class UserService {
 
     public void updateUser(User user) throws SQLException{
 
+        String hashed = PasswordUtil.hashPassword(user.getUser_password());
+        user.setUser_password(hashed);
         userDAO.updateUser(user);
 
     }

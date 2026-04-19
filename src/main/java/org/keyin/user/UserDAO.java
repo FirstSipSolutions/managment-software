@@ -65,16 +65,16 @@ public class UserDAO {
             ResultSet result = pstmt.executeQuery();
 
             while(result.next()){
-                int userId = result.getInt("user_id");
+                int userId = result.getInt("id");
                 String username = result.getString("username");
                 String email = result.getString("email");
                 String phoneNumber = result.getString("phone_number");
                 String address = result.getString("address");
-                String role = result.getString("role");
+                String role = result.getString("user_role");
                 users.add(new User(userId, username, email, phoneNumber, address, role));
             }
 
-            logger.logInfo("Data added to user list successfully.");
+            logger.logInfo("Users displayed successfully.");
 
         } catch (SQLException e) {
 

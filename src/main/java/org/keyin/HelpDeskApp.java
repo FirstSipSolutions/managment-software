@@ -26,13 +26,12 @@ public class HelpDeskApp {
 
         // CustomLogger method to log information and errors to a text file.
         CustomLogger logger = new CustomLogger();
-
+        logger.logInfo("App started");
         // Scanner for user input
         Scanner scanner = new Scanner(System.in);
         int choice;
 
         do {
-            logger.logInfo("App started");
             System.out.println("\n === IT Help Desk Management System ===");
             System.out.println("\n1. Add a new user");
             System.out.println("2. Login as a user");
@@ -160,10 +159,10 @@ public class HelpDeskApp {
         int choice;
 
         do {
-            System.out.println("\n ======================");
+            System.out.println("\n =======================");
             System.out.println(" === Technician Menu ===");
             System.out.println(" =======================");
-            System.out.println("\nChoose an option:");
+            System.out.println("\n   Choose an option:");
             System.out.println("\n1. View all Service Plans");
             System.out.println("2. View open tickets");
             System.out.println("3. Claim a ticket");
@@ -195,7 +194,6 @@ public class HelpDeskApp {
                     break;
                 case 3:
                     updateTicketStatus(scanner, ticketService);
-
                     break;
                 case 9:
                     System.out.println("\nLogging out, leaving technician menu...");
@@ -211,31 +209,21 @@ public class HelpDeskApp {
         int choice;
 
         do {
-            System.out.println("\n ==================");
-            System.out.println(" === Admin Menu ===");
-            System.out.println(" ==================");
-            System.out.println("\n  Choose an option");
-            System.out.println("\n1. Add a Service Plan");
-            System.out.println("2. Update Service Plan");
-            System.out.println("3. Delete Service Plan");
-            System.out.println("4. View all Service Plans");
-            System.out.println("5. Add user");
-            System.out.println("6. Update user");
-            System.out.println("7. Delete user");
-            System.out.println("8. View all users");
-            System.out.println("9. Add a ticket");
-            System.out.println("10. Update a ticket");
-            System.out.println("11. Delete a ticket");
-            System.out.println("12. View all tickets");
-            System.out.println("13. Add a product");
-            System.out.println("14. Update a product");
-            System.out.println("15. Delete a product");
-            System.out.println("16. View all products");
-            System.out.println("17. View total stock value");
-            System.out.println("18. View total revenue");
-            System.out.println("20. Logout");
-            System.out.println();
-            System.out.print("Enter your choice: ");
+            System.out.println("\n              ==================");
+            System.out.println("              === Admin Menu ===");
+            System.out.println("              ==================");
+            System.out.println("\n               Choose an option");
+            System.out.println("\n 1. Add a Service Plan       11. Delete a ticket");
+            System.out.println(" 2. Update Service Plan      12. View all tickets");
+            System.out.println(" 3. Delete Service Plan      13. Add a product");
+            System.out.println(" 4. View all Service Plans   14. Update a product");
+            System.out.println(" 5. Add user                 15. Delete a product");
+            System.out.println(" 6. Update user              16. View all products");
+            System.out.println(" 7. Delete user              17. View total stock value");
+            System.out.println(" 8. View all users           18. View total revenue");
+            System.out.println(" 9. Add a ticket");
+            System.out.println("10. Update a ticket          20. Logout");
+            System.out.print("\nEnter your choice: ");
 
             // Validate input
             while (!scanner.hasNextInt()) {
@@ -265,7 +253,6 @@ public class HelpDeskApp {
                         System.out.println(e.getMessage());
                     }
                     break;
-
                 case 5:
                     addNewUser(scanner, userService);
                     break;
@@ -489,8 +476,8 @@ public class HelpDeskApp {
             }
 
 
-            System.out.println("\nYour Tickets");
-            System.out.println(" ============ ");
+            System.out.println("\n Your Tickets");
+            System.out.println(" ------------ ");
             for (Ticket t : tickets) {
                 System.out.println("ID: " + t.getTicket_id() + " : " + t.getTitle() + " : Status: " + t.getStatus() + " Priority: " + t.getPriority());
             }
@@ -515,7 +502,7 @@ public class HelpDeskApp {
                 System.out.println("No open tickets.");
                 return;
             }
-            System.out.println("Open Tickets");
+            System.out.println("\nOpen Tickets");
             System.out.println("==========");
 
             for (Ticket t : tickets) {
