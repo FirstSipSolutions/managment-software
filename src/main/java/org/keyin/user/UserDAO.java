@@ -73,14 +73,10 @@ public class UserDAO {
                 String role = result.getString("user_role");
                 users.add(new User(userId, username, email, phoneNumber, address, role));
             }
-
             logger.logInfo("Users displayed successfully.");
-
         } catch (SQLException e) {
-
             logger.logError("SQL error adding user." + e.getMessage());
         }
-
         return users;
 
     }
@@ -94,19 +90,12 @@ public class UserDAO {
                 int rowsDeleted = pstmt.executeUpdate();
 
                 if (rowsDeleted > 0) {
-
                     logger.logInfo("User deleted, ID: " +userId );
-
                 } else {
-
                     logger.logError("Delete failed. No user found with ID: " + userId);
-
                 }
-
         } catch (SQLException e) {
-
             logger.logError("SQL error deleting user: " + userId + " " + e.getMessage());
-
         }
     }
 
@@ -127,16 +116,12 @@ public class UserDAO {
                 int rowsUpdated = pstmt.executeUpdate();
 
                 if (rowsUpdated > 0) {
-
                     logger.logInfo("User information updated, ID: " + user.getUser_id());
-
                 } else {
-
                     logger.logError("Update failed. No user found with ID: " + user.getUser_id());
                 }
         }
             catch (SQLException e){
-
                 logger.logError("SQL, error updating user id " + user.getUser_id() + "," + e.getMessage());
         }
     }
