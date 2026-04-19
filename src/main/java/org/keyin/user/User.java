@@ -125,4 +125,8 @@ public class User {
     public void setUser_address(String user_address) {
         this.user_address = user_address;
     }
+
+    public String toString() {
+        return ("User ID: " + this.user_id + "," + " Username: " + this.user_name + "," + " Password: " + this.user_password + "," + " Email: " + this.user_email + "," + " Address: " + this.user_address + "," + " Phone: " + this.user_phone + "," + " Role: " + this.user_role);
+    }
 }
