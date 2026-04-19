@@ -5,3 +5,49 @@ ERROR: Test error Date: 2026-04-13 Time: 15:36:42.948304500
 INFO: App started Date: 2026-04-18 Time: 16:10:33.842336700 
 INFO: App started Date: 2026-04-18 Time: 16:10:33.842336700 
 INFO: App started Date: 2026-04-18 Time: 16:16:05.840751900 
+INFO: App started Date: 2026-04-18 Time: 20:29:23.283419 
+INFO: App started Date: 2026-04-18 Time: 20:38:50.880478 
+ERROR: Could not insert values into the database.ERROR: insert or update on table "service_plans" violates foreign key constraint "service_plans_user_id_fkey"
+  Detail: Key (user_id)=(0) is not present in table "users". Date: 2026-04-18 Time: 20:38:50.879312 
+INFO: App started Date: 2026-04-18 Time: 21:01:29.641151 
+INFO: App started Date: 2026-04-18 Time: 21:01:57.882751 
+INFO: App started Date: 2026-04-18 Time: 21:02:58.488293 
+INFO: App started Date: 2026-04-18 Time: 21:05:42.366515 
+INFO: App started Date: 2026-04-18 Time: 21:08:04.076782 
+INFO: Data inserted into database successfully. Date: 2026-04-18 Time: 21:08:04.075885 
+INFO: Service information updated, ID: 5 Date: 2026-04-18 Time: 21:08:04.075885 
+INFO: Data added to list successfully. Date: 2026-04-18 Time: 21:08:04.075885 
+INFO: Service deleted, ID: 5 Date: 2026-04-18 Time: 21:08:04.075885 
+ERROR: SQL error adding user.The column name user_id was not found in this ResultSet. Date: 2026-04-18 Time: 21:08:04.074557 
+ERROR: SQL error adding user.The column name user_id was not found in this ResultSet. Date: 2026-04-18 Time: 21:08:04.074557 
+INFO: User information updated, ID: 10 Date: 2026-04-18 Time: 21:08:04.074557 
+INFO: App started Date: 2026-04-18 Time: 21:53:15.399954 
+ERROR: SQL error adding user.The column name role was not found in this ResultSet. Date: 2026-04-18 Time: 21:53:15.397546 
+INFO: App started Date: 2026-04-18 Time: 22:03:14.375894 
+INFO: Users displayed successfully. Date: 2026-04-18 Time: 22:03:14.373259 
+INFO: App started Date: 2026-04-18 Time: 22:22:03.576909 
+INFO: Users displayed successfully. Date: 2026-04-18 Time: 22:22:03.574048 
+INFO: App started Date: 2026-04-18 Time: 22:23:15.702471 
+INFO: App started Date: 2026-04-18 Time: 22:23:38.887728 
+INFO: App started Date: 2026-04-18 Time: 22:23:38.887728 
+INFO: App started Date: 2026-04-18 Time: 22:23:38.887728 
+INFO: Users displayed successfully. Date: 2026-04-18 Time: 22:23:38.882278 
+INFO: App started Date: 2026-04-18 Time: 22:30:29.575826 
+INFO: App started Date: 2026-04-18 Time: 22:30:29.575826 
+INFO: User information updated, ID: 10 Date: 2026-04-18 Time: 22:30:29.571150 
+INFO: App started Date: 2026-04-18 Time: 22:36:38.326710 
+INFO: User information updated, ID: 10 Date: 2026-04-18 Time: 22:36:38.324278 
+INFO: Users displayed successfully. Date: 2026-04-18 Time: 22:36:38.324278 
+INFO: App started Date: 2026-04-18 Time: 22:47:23.075087 
+INFO: Data added to list successfully. Date: 2026-04-18 Time: 22:47:23.074256 
+INFO: App started Date: 2026-04-18 Time: 22:47:23.075087 
+INFO: getTicketsByUser returned as: 0 tickets for user 13 Date: 2026-04-18 Time: 22:47:23.075076 
+INFO: getTicketsByUser returned as: 1 tickets for user 13 Date: 2026-04-18 Time: 22:47:23.075076 
+INFO: App started Date: 2026-04-18 Time: 22:47:23.075087 
+INFO: App started Date: 2026-04-18 Time: 22:47:23.075087 
+INFO: Data added to list successfully. Date: 2026-04-18 Time: 22:47:23.074256 
+INFO: getOpenTickets returned 1 opened tickets Date: 2026-04-18 Time: 22:47:23.075076 
+INFO: Ticket 1 status updated to In Progress Date: 2026-04-18 Time: 22:47:23.075076 
+INFO: getOpenTickets returned 0 opened tickets Date: 2026-04-18 Time: 22:47:23.075076 
+INFO: App started Date: 2026-04-18 Time: 22:47:23.075087 
+INFO: Program closed Date: 2026-04-18 Time: 22:47:23.075087 

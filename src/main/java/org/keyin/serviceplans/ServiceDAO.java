@@ -35,7 +35,7 @@ public class ServiceDAO {
             pstmt.setInt(5, servicePlan.getUserId());
             pstmt.executeUpdate();
 
-            logger.logInfo("Data inserted into database successfully.");
+            logger.logInfo("Service plan inserted into database successfully.");
 
         } catch (SQLException e) {
 
