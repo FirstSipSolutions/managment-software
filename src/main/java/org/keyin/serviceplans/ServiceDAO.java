@@ -23,16 +23,14 @@ public class ServiceDAO {
      * Uncomment and update the method to use the actual service plan object and its fields.
      */
     public void addServicePlan(ServicePlan servicePlan) {
-        String sql = "INSERT INTO service_plans (plan_type, plan_description, plan_price, date_purchased, user_id) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO service_plans (plan_type, plan_description, plan_price) VALUES (?, ?, ?)";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql))
         {
             pstmt.setString(1, servicePlan.getPlanType());
             pstmt.setString(2, servicePlan.getPlanDescription());
-            pstmt.setFloat(3, servicePlan.getPlanPrice());
-            pstmt.setDate(4, Date.valueOf(servicePlan.getDatePurchased()));
-            pstmt.setInt(5, servicePlan.getUserId());
+            pstmt.setDouble(3, servicePlan.getPlanPrice());
             pstmt.executeUpdate();
 
             logger.logInfo("Service plan inserted into database successfully.");
@@ -43,7 +41,7 @@ public class ServiceDAO {
         }
     }
 
-    public List<ServicePlan> getAllServicePlans() {
+    public List<ServicePlan> getAllServicePlans() throws SQLException{
         List<ServicePlan> plans = new ArrayList<>();
 
         String sql = "SELECT * FROM service_plans";
@@ -54,17 +52,19 @@ public class ServiceDAO {
             ResultSet result = pstmt.executeQuery();
 
             while(result.next()){
+                int  planId = result.getInt("id");
                String planType = result.getString("plan_type");
                String planDescription = result.getString("plan_description");
-               Float planPrice = result.getFloat("plan_price");
+               double planPrice = result.getDouble("plan_price");
                LocalDate datePurchased = result.getDate("date_purchased").toLocalDate();
                int userId = result.getInt("user_id");
 
-                plans.add(new ServicePlan(planType, planDescription, planPrice, datePurchased, userId));
+                plans.add(new ServicePlan(planId, planType, planDescription, planPrice, datePurchased, userId));
             }
             logger.logInfo("Data added to list successfully.");
             } catch (SQLException e) {
                 logger.logError("Could not retrieve values from the database." + e.getMessage());
+                throw e;
             }
         return plans;
     }
@@ -103,7 +103,7 @@ public class ServiceDAO {
 
             pstmt.setString(1, servicePlan.getPlanType());
             pstmt.setString(2, servicePlan.getPlanDescription());
-            pstmt.setFloat(3, servicePlan.getPlanPrice());
+            pstmt.setDouble(3, servicePlan.getPlanPrice());
 
             pstmt.setInt(4, servicePlan.getPlanId());
             int rowsUpdated = pstmt.executeUpdate();
