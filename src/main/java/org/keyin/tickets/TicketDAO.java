@@ -9,6 +9,7 @@ package org.keyin.tickets;
 import org.keyin.database.DatabaseConnection;
 
 import org.keyin.customlogger.CustomLogger;
+import org.keyin.user.User;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -53,7 +54,7 @@ public class TicketDAO {
         }       catch (SQLException sqlException) {
 
                     logger.logError("Adding Ticket Failed: " + sqlException.getMessage());
-
+                    throw sqlException;
                 }
 
 
@@ -198,7 +199,30 @@ public class TicketDAO {
         }
     }
 
+    public boolean claimTicket(int ticketId, int assignedTo) {
 
+        String sql = "UPDATE tickets SET assigned_to = ?, status = 'In Progress' WHERE ticket_id = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)){
+
+            pstmt.setInt(1, assignedTo);
+            pstmt.setInt( 2, ticketId);
+            int rowsAffected = pstmt.executeUpdate();
+
+            if (rowsAffected > 0) {
+                logger.logInfo("Ticket " + ticketId + " claimed by User ID: " + assignedTo);
+                return true;
+            } else {
+                logger.logError("Failed to claim: Ticket ID " + ticketId + " does not exist.");
+                return  false;
+            }
+
+        }catch (SQLException sqlException){
+            logger.logError("Failed to claim ticket please try again, the ticket number you tried was " + ticketId + " " + sqlException.getMessage());
+            return false;
+        }
+    }
 
          // this will handle the tickets deleted by ID
         //todo: this will be used by ADMIN
