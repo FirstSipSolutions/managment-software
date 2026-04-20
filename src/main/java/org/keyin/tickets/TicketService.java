@@ -19,9 +19,9 @@ public class TicketService {
         ticketDAO.addTicket(ticket);
     }
 
-
-
-
+    public boolean claimTicket(int ticketId, int assignedTo) throws SQLException {
+        return ticketDAO.claimTicket(ticketId, assignedTo);
+    }
 
     // view all via admin permission
 

@@ -25,7 +25,6 @@ public class HelpDeskApp {
         ServicePlanService servicePlanService = new ServicePlanService();
         TicketService ticketService = new TicketService();
         HardwareProductsService hardwareProductsService = new HardwareProductsService();
-        User user = new User();
 
         // CustomLogger method to log information and errors to a text file.
         CustomLogger logger = new CustomLogger();
@@ -112,7 +111,7 @@ public class HelpDeskApp {
             System.out.println(" === Employee Menu ===");
             System.out.println(" =====================");
             System.out.println("\n   Choose an option");
-            System.out.println("\n1. View Service Plans");
+            System.out.println("\n1. Choose a service plan");
             System.out.println("2. Submit a ticket");
             System.out.println("3. View my ticket");
             System.out.println("9. Logout");
@@ -129,16 +128,7 @@ public class HelpDeskApp {
 
             switch (choice) {
                 case 1:
-                    try {
-                        List<ServicePlan> plans = servicePlanService.getAllServicePlans();
-                        System.out.println("\nService Plans");
-                        System.out.println("-------------");
-                        for (ServicePlan plan : plans) {
-                            System.out.println("Plan type: " + plan.getPlanType() + ". " + "Description: " + plan.getPlanDescription() + ". " + "$" + plan.getPlanPrice());
-                        }
-                    } catch (SQLException e) {
-                        throw new RuntimeException(e);
-                    }
+                    chooseServicePlan(scanner, user, servicePlanService);
                     break;
                 case 2:
                     submitTicket(scanner, user, ticketService);
@@ -156,9 +146,8 @@ public class HelpDeskApp {
 
     }
 
-
     // Technician menu
-    private static void showTechnicianMenu(Scanner scanner, User user, UserService userService, TicketService ticketService, ServicePlanService servicePlanService, CustomLogger logger) {
+    private static void showTechnicianMenu(Scanner scanner, User technician, UserService userService, TicketService ticketService, ServicePlanService servicePlanService, CustomLogger logger) {
         int choice;
 
         do {
@@ -169,6 +158,7 @@ public class HelpDeskApp {
             System.out.println("\n1. View all Service Plans");
             System.out.println("2. View open tickets");
             System.out.println("3. Claim a ticket");
+            System.out.println("4. View my tickets");
             System.out.println("9. Logout");
             System.out.print("\nEnter your choice: ");
 
@@ -196,8 +186,10 @@ public class HelpDeskApp {
                     viewOpenTickets(ticketService);
                     break;
                 case 3:
-                    updateTicketStatus(scanner, ticketService);
+                    claimTicket(scanner, technician,ticketService);
                     break;
+                case 4:
+                    viewMyTickets(technician, ticketService);
                 case 9:
                     System.out.println("\nLogging out, leaving technician menu...");
                     break;
@@ -238,7 +230,11 @@ public class HelpDeskApp {
 
             switch (choice) {
                 case 1:
-                    addServicePlan(scanner, servicePlanService);
+                    try {
+                        addServicePlan(scanner, servicePlanService);
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
                     break;
                 case 2:
                     updateServicePlan(scanner, servicePlanService);
@@ -408,27 +404,24 @@ public class HelpDeskApp {
     }
 
     // Service methods start here
-    private static void addServicePlan(Scanner scanner, ServicePlanService servicePlanService) {
+    private static void addServicePlan(Scanner scanner, ServicePlanService servicePlanService) throws SQLException {
 
-        System.out.println("\nEnter plan type: ");
+        System.out.print("\nEnter plan type: ");
         String planType = scanner.nextLine();
-        System.out.println("Enter plan description: ");
+        System.out.print("Enter plan description: ");
         String planDescription = scanner.nextLine();
-        System.out.println("Enter plan price: ");
-        Float planPrice = scanner.nextFloat();
-        LocalDate datePurchased = LocalDate.now();
-        System.out.println("Enter user ID: ");
-        int userId = scanner.nextInt();
+        System.out.print("Enter plan price: ");
+        double planPrice = scanner.nextDouble();
         scanner.nextLine();
 
-        ServicePlan servicePlan = new ServicePlan(planType, planDescription, planPrice, datePurchased, userId);
+        ServicePlan servicePlan = new ServicePlan(planType, planDescription, planPrice);
         try {
             servicePlanService.addServicePlan(servicePlan);
             System.out.println("Plan added successfully!");
         } catch (SQLException e) {
             System.out.println("Error adding plan: " + e.getMessage());
+            throw e;
         }
-
     }
 
     private static void deleteServicePlan(Scanner scanner, ServicePlanService servicePlanService){
@@ -466,6 +459,64 @@ public class HelpDeskApp {
             System.out.println("\nError updating service plan: " + e.getMessage());
         }
     }
+
+    private static void chooseServicePlan(Scanner scanner, User user, ServicePlanService servicePlanService) {
+        try {
+            List<ServicePlan> availablePlans = servicePlanService.getAllServicePlans();
+
+            if (availablePlans.isEmpty()) {
+                System.out.println("\nNo service plans are currently available.");
+                return;
+            }
+
+            System.out.println("\n Available Service Plans ");
+            System.out.println("  ---------------------------  ");
+            for (ServicePlan plan : availablePlans) {
+                System.out.println("ID: " + plan.getPlanId() +
+                        "," + " Type: " + plan.getPlanType() +
+                        "," + " Description: " + plan.getPlanDescription() +
+                        "," + " Price: $" + plan.getPlanPrice());
+            }
+
+            System.out.print("\nEnter the ID of the plan you want to select (or 0 to cancel): ");
+            int planChoice = scanner.nextInt();
+            scanner.nextLine(); // Consume newline
+
+            if (planChoice == 0) {
+                System.out.println("Canceling selection...");
+                return;
+            }
+
+            ServicePlan selectedPlan = null;
+            for (ServicePlan plan : availablePlans) {
+                if (plan.getPlanId() == planChoice) {
+                    selectedPlan = plan;
+                    break;
+                }
+            }
+
+            // Check if the plan Id is there
+            if (selectedPlan == null) {
+                System.out.println("\nInvalid Plan ID. Canceling...");
+                return;
+            }
+
+            ServicePlan newEmployeePlan = new ServicePlan(
+                    selectedPlan.getPlanType(),
+                    selectedPlan.getPlanDescription(),
+                    selectedPlan.getPlanPrice(),
+                    LocalDate.now(),
+                    user.getUser_id()
+            );
+
+            servicePlanService.addServicePlan(newEmployeePlan);
+            System.out.println("\nSuccess! You are now enrolled in the " + selectedPlan.getPlanType() + " plan.");
+
+        } catch (SQLException e) {
+            System.out.println("\nError processing plan selection: " + e.getMessage());
+        }
+    }
+
         // added submitTIcket portion here
         // ticket submission needs a handler and method
         // this is adding the ticket service Subticket method
@@ -500,8 +551,7 @@ public class HelpDeskApp {
 
 
         }
-                private static void viewMyTickets(User user, TicketService ticketService) {
-
+        private static void viewMyTickets(User user, TicketService ticketService) {
 
         try {
             List<Ticket> tickets = ticketService.getMyTicket(user.getUser_id());
@@ -582,7 +632,27 @@ public class HelpDeskApp {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+    }
 
+    private static void claimTicket(Scanner scanner, User technician, TicketService ticketService) {
+        System.out.print("\nEnter the ID of the ticket you want to claim: ");
+        int ticketId = scanner.nextInt();
+        scanner.nextLine(); // Consume the newline
+
+        try {
+
+            boolean isClaimed =  ticketService.claimTicket(ticketId, technician.getUser_id());
+
+           if (isClaimed){
+               System.out.println("\nSuccess! Ticket " + ticketId + " has been assigned to " + technician.getUser_name() + ".");
+               System.out.println("Status automatically updated to 'In Progress'.");
+           } else {
+               System.out.println("\nClaim Failed: No ticket found with ID " + ticketId + ".");
+           }
+
+        } catch (SQLException e) {
+            System.out.println("\nError claiming ticket: " + e.getMessage());
+        }
     }
 
     // Hardware service start here
@@ -593,7 +663,7 @@ public class HelpDeskApp {
         System.out.print("Enter item type: ");
         String itemType = scanner.nextLine();
         System.out.print("Enter price: ");
-        Double itemPrice = scanner.nextDouble();
+        double itemPrice = scanner.nextDouble();
         scanner.nextLine();
         System.out.print("Enter amount of stock: ");
         int itemQty = scanner.nextInt();
@@ -645,7 +715,7 @@ public class HelpDeskApp {
 
 
 
- // catching exception same as others
+        // catching exception same as others
         } catch (SQLException exception) {
 
 
