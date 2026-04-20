@@ -4,12 +4,32 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="874bb112-b0d5-448b-b2cf-1b9abc25f0bb" name="Changes" comment="">
+    <list default="true" id="e6ae8aaa-0bfd-426b-9a12-bdce53b60023" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/target/classes/org/keyin/HelpDeskApp.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/org/keyin/customlogger/CustomLogger.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/org/keyin/database/DatabaseConnection.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/org/keyin/hardwareproduct/HardwareProducts.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/org/keyin/hardwareproduct/HardwareProductsDAO.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/org/keyin/hardwareproduct/HardwareProductsService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/org/keyin/serviceplans/ServiceDAO.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/org/keyin/serviceplans/ServicePlan.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/org/keyin/serviceplans/ServicePlanService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/org/keyin/tickets/Ticket.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/org/keyin/tickets/TicketDAO.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/org/keyin/tickets/TicketService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/org/keyin/user/User.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/org/keyin/user/UserDAO.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/org/keyin/user/UserService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/org/keyin/user/interfaces/canManageSystem.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/org/keyin/user/interfaces/canManageTickets.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/org/keyin/user/interfaces/canSubmitTicket.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/org/keyin/user/userroles/Admin.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/org/keyin/user/userroles/Employee.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/org/keyin/user/userroles/Technician.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/org/keyin/utils/PasswordUtil.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/applicationlogs.txt" beforeDir="false" afterPath="$PROJECT_DIR$/applicationlogs.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/keyin/HelpDeskApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/keyin/HelpDeskApp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/keyin/serviceplans/ServiceDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/keyin/serviceplans/ServiceDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/keyin/serviceplans/ServicePlan.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/keyin/serviceplans/ServicePlan.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/keyin/tickets/TicketDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/keyin/tickets/TicketDAO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/keyin/tickets/TicketService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/keyin/tickets/TicketService.java" afterDir="false" />
     </list>
@@ -27,27 +47,13 @@
     &quot;accountId&quot;: &quot;bfe3a350-5b79-4c5d-9a1c-bb057323d7e4&quot;
   }
 }</component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.HelpDeskApp.executor": "Run",
-    "git-widget-placeholder": "dev",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.HelpDeskApp.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;
   }
-}]]></component>
-  <component name="RunManager">
-    <configuration default="true" type="JetRunConfigurationType">
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
-      <option name="filePath" />
-      <method v="2" />
-    </configuration>
-  </component>
+}</component>
   <component name="TaskManager">
     <servers />
   </component>

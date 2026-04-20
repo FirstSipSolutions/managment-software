@@ -23,6 +23,10 @@ public class TicketService {
         return ticketDAO.claimTicket(ticketId, assignedTo);
     }
 
+    public List<Ticket> getClaimedTickets(int technicianId) throws SQLException {
+        return ticketDAO.getClaimedTickets(technicianId);
+    }
+
     // view all via admin permission
 
     public List<Ticket> getAllTickets() throws SQLException {

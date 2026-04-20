@@ -189,7 +189,8 @@ public class HelpDeskApp {
                     claimTicket(scanner, technician,ticketService);
                     break;
                 case 4:
-                    viewMyTickets(technician, ticketService);
+                    viewMyClaimedTickets(technician, ticketService);
+                    break;
                 case 9:
                     System.out.println("\nLogging out, leaving technician menu...");
                     break;
@@ -446,7 +447,7 @@ public class HelpDeskApp {
         System.out.print("Enter new description: ");
         String description = scanner.nextLine();
         System.out.print("Enter new plan price: ");
-        Float planPrice = scanner.nextFloat();
+        double planPrice = scanner.nextDouble();
         scanner.nextLine();
 
 
@@ -575,7 +576,7 @@ public class HelpDeskApp {
         }
     }
 
-// view open ti cket method
+// view open ticket method
 
 
     private static void viewOpenTickets(TicketService ticketService) {
@@ -652,6 +653,28 @@ public class HelpDeskApp {
 
         } catch (SQLException e) {
             System.out.println("\nError claiming ticket: " + e.getMessage());
+        }
+    }
+
+    private static void viewMyClaimedTickets(User technician, TicketService ticketService) {
+        try {
+            List<Ticket> claimedTickets = ticketService.getClaimedTickets(technician.getUser_id());
+
+            if (claimedTickets.isEmpty()) {
+                System.out.println("\nYou have no claimed tickets at the moment.");
+                return;
+            }
+
+            System.out.println("\n My Claimed Tickets ");
+            System.out.println("  ------------------  ");
+            for (Ticket ticket : claimedTickets) {
+                System.out.println("ID: " + ticket.getTicket_id() +
+                        "," + " Title: " + ticket.getTitle() +
+                        "," + " Status: " + ticket.getStatus() +
+                        "," + " Priority: " + ticket.getPriority());
+            }
+        } catch (SQLException e) {
+            System.out.println("Error retrieving claimed tickets: " + e.getMessage());
         }
     }
 

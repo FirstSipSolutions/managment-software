@@ -201,7 +201,7 @@ public class TicketDAO {
 
     public boolean claimTicket(int ticketId, int assignedTo) {
 
-        String sql = "UPDATE tickets SET assigned_to = ?, status = 'In Progress' WHERE ticket_id = ?";
+        String sql = "UPDATE tickets SET assigned_to = ?, status = 'In Progress' WHERE id = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)){
@@ -222,6 +222,23 @@ public class TicketDAO {
             logger.logError("Failed to claim ticket please try again, the ticket number you tried was " + ticketId + " " + sqlException.getMessage());
             return false;
         }
+    }
+
+    public List<Ticket> getClaimedTickets(int technicianId) throws SQLException {
+        List<Ticket> tickets = new ArrayList<>();
+        String sql = "SELECT * FROM tickets WHERE assigned_to = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, technicianId);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                tickets.add(mapRow(rs));
+            }
+        }
+        return tickets;
     }
 
          // this will handle the tickets deleted by ID
