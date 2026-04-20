@@ -331,7 +331,7 @@ public class HelpDeskApp {
                     System.out.println("TODO: View total stock value");
                     break;
                 case 18:
-                    System.out.println("TODO: View total revenue");
+                    viewTotalRevenue(servicePlanService);
                 case 20:
                     System.out.println("\nlogging out, leaving admin menu...");
                     break;
@@ -632,7 +632,26 @@ public class HelpDeskApp {
 //            System.out.println("\nError updating service plan: " + e.getMessage());
 //        }
 //    }
+// as per final fixes
+    // added this to finish the view Toal Rev method
+    // it was in the mentu but not wired up
 
+    private static void viewTotalRevenue(ServicePlanService servicePlanService) {
+        try {
+            double total = servicePlanService.getTotalRevenue();
+
+            System.out.println("Total Revenue: $" + total);
+
+
+
+
+ // catching exception same as others
+        } catch (SQLException exception) {
+
+
+            System.out.println("Error retrieving revenue: " + exception.getMessage());
+        }
+    }
     private static void deleteProduct(Scanner scanner, HardwareProductsService hardwareProductsService) {
 
         System.out.print("Enter Item id: ");

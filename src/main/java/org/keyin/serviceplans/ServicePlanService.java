@@ -43,6 +43,9 @@ public class ServicePlanService {
 
     }
 
+    public double getTotalRevenue() throws SQLException {
+        return serviceDAO.getTotalRevenue();
+    }
 
 
 }

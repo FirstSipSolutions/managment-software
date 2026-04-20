@@ -124,4 +124,23 @@ public class ServiceDAO {
         }
     }
 
+    // added getTOatal revenue here - as per final touches missed this
+    // will doc changes
+
+
+    public double getTotalRevenue() throws SQLException {
+        String sql = "SELECT SUM(plan_price) AS total FROM service_plans";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);
+
+             ResultSet rs = pstmt.executeQuery()) {
+            if (rs.next()) {
+                return rs.getDouble("total");
+            }
+        }
+
+
+        return 0;
+    }
 }
