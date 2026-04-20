@@ -1,6 +1,8 @@
 package org.keyin;
 
 import org.keyin.customlogger.CustomLogger;
+import org.keyin.hardwareproduct.HardwareProducts;
+import org.keyin.hardwareproduct.HardwareProductsService;
 import org.keyin.serviceplans.ServicePlan;
 import org.keyin.serviceplans.ServicePlanService;
 import org.keyin.user.User;
@@ -22,6 +24,7 @@ public class HelpDeskApp {
         ServicePlan servicePlan = new ServicePlan();
         ServicePlanService servicePlanService = new ServicePlanService();
         TicketService ticketService = new TicketService();
+        HardwareProductsService hardwareProductsService = new HardwareProductsService();
         User user = new User();
 
         // CustomLogger method to log information and errors to a text file.
@@ -52,7 +55,7 @@ public class HelpDeskApp {
                     addNewUser(scanner, userService);
                     break;
                 case 2:
-                    logInAsUser(scanner, userService, servicePlanService, ticketService, logger, servicePlan);
+                    logInAsUser(scanner, userService, servicePlanService, ticketService, logger, servicePlan, hardwareProductsService);
                     break;
                 case 9:
                     System.out.println("\nExiting the program...");
@@ -67,7 +70,7 @@ public class HelpDeskApp {
         scanner.close();
     }
 
-    private static void logInAsUser(Scanner scanner, UserService userService, ServicePlanService servicePlanService, TicketService ticketService, CustomLogger logger, ServicePlan servicePlan) {
+    private static void logInAsUser(Scanner scanner, UserService userService, ServicePlanService servicePlanService, TicketService ticketService, CustomLogger logger, ServicePlan servicePlan, HardwareProductsService hardwareProductsService) {
         System.out.print("\nEnter username: ");
         String username = scanner.nextLine();
         System.out.print("Enter password: ");
@@ -79,7 +82,7 @@ public class HelpDeskApp {
                 System.out.println("\nLogin Successful! Welcome " + user.getUser_name());
                 switch (user.getUser_role().toLowerCase()) {
                     case "admin":
-                        showAdminMenu(scanner, user, userService, servicePlanService, ticketService, servicePlan);
+                        showAdminMenu(scanner, user, userService, servicePlanService, ticketService, servicePlan, hardwareProductsService);
                         break;
                     case "technician":
                         showTechnicianMenu(scanner, user, userService, ticketService, servicePlanService, logger);
@@ -205,7 +208,7 @@ public class HelpDeskApp {
     }
 
     // Admin menu with minimal implementation
-    private static void showAdminMenu(Scanner scanner, User user, UserService userService, ServicePlanService servicePlanService, TicketService ticketService, ServicePlan servicePlan) {
+    private static void showAdminMenu(Scanner scanner, User user, UserService userService, ServicePlanService servicePlanService, TicketService ticketService, ServicePlan servicePlan, HardwareProductsService hardwareProductsService) {
         int choice;
 
         do {
@@ -222,7 +225,7 @@ public class HelpDeskApp {
             System.out.println(" 7. Delete user              17. View total stock value");
             System.out.println(" 8. View all users           18. View total revenue");
             System.out.println(" 9. Add a ticket");
-            System.out.println("10. Update a ticket          20. Logout");
+            System.out.println("10. Update ticket status     20. Logout");
             System.out.print("\nEnter your choice: ");
 
             // Validate input
@@ -269,28 +272,60 @@ public class HelpDeskApp {
                     }
                     break;
                 case 9:
-                    System.out.println("TODO: Add a ticket");
+                    submitTicket(scanner, user, ticketService);
                     break;
                 case 10:
-                    System.out.println("TODO: Update a ticked");
+                    updateTicketStatus(scanner, ticketService);
                     break;
                 case 11:
-                    System.out.println("TODO: Delete a ticked");
+                    deleteTicket(scanner, ticketService);
                     break;
                 case 12:
-                    System.out.println("TODO: View all tickets");
+                    try {
+                        List<Ticket> allTickets = ticketService.getAllTickets();
+
+                        if (allTickets.isEmpty()) {
+                            System.out.println("\nNo tickets found in the system.");
+                        } else {
+                            System.out.println("\n    All Tickets");
+                            System.out.println(" ---------------------");
+                            for (Ticket ticket : allTickets) {
+                                System.out.println("ID: " + ticket.getTicket_id() + "," +  " Title: " + ticket.getTitle() +
+                                        "," + " Status: " + ticket.getStatus() + "," + " Priority: " + ticket.getPriority() +
+                                        "," + " Submitted By User ID: " + ticket.getSubmittedBy());
+                            }
+                        }
+                    } catch (SQLException e) {
+                        System.out.println("Error retrieving tickets: " + e.getMessage());
+                    }
                     break;
                 case 13:
-                    System.out.println("TODO: Add product");
+                    addItem(scanner, hardwareProductsService);
                     break;
                 case 14:
                     System.out.println("TODO: Update a product");
                     break;
                 case 15:
-                    System.out.println("TODO: Delete a product");
+                    deleteProduct(scanner, hardwareProductsService);
                     break;
                 case 16:
-                    System.out.println("TODO: View all products");
+                    try {
+                        List<HardwareProducts> allProducts = hardwareProductsService.getAllItems();
+
+                        if (allProducts.isEmpty()) {
+                            System.out.println("\nNo products found in the system.");
+                        } else {
+                            System.out.println("\n    All Products");
+                            System.out.println(" ---------------------");
+                            for (HardwareProducts products : allProducts) {
+                                System.out.println("ID: " + products.getItemId() + "," +  " Name: " + products.getItemName() +
+                                        "," + " Type: " + products.getItemType() + "," + " Price: $" + products.getItemPrice() +
+                                        "," + " In Stock: " + products.getQty_inStock());
+                            }
+                        }
+                    } catch (SQLException e) {
+                        System.out.println("Error retrieving tickets: " + e.getMessage());
+                    }
                     break;
                 case 17:
                     System.out.println("TODO: View total stock value");
@@ -503,7 +538,7 @@ public class HelpDeskApp {
                 return;
             }
             System.out.println("\nOpen Tickets");
-            System.out.println("==========");
+            System.out.println("----------");
 
             for (Ticket t : tickets) {
                 System.out.println("ID: " + t.getTicket_id() + " : " + t.getTitle() + "  Priority: " + t.getPriority() + "  Submitted by: " + t.getSubmittedBy());
@@ -512,31 +547,91 @@ public class HelpDeskApp {
             System.out.println("Error retrieving open tickets: " + e.getMessage());
         }
     }
-// updating tickets here
+
+    // updating tickets here
     // this caused error bug due to \n l;ew line error
-private static void updateTicketStatus(Scanner scanner, TicketService ticketService) {
-    System.out.print("Enter ticket ID to update:");
-    // this all tackes scanner entry
+        private static void updateTicketStatus(Scanner scanner, TicketService ticketService) {
+            System.out.print("Enter ticket ID to update:");
+            // this all tackes scanner entry
 
-    int ticketId = scanner.nextInt();
-    scanner.nextLine();
+            int ticketId = scanner.nextInt();
+            scanner.nextLine();
 
-// print out status entry
-    System.out.print("Enter new status (Open/In Progress/Resolved/Closed):");
-    String newStatus = scanner.nextLine();
-// try catch
-    try {
-        ticketService.updateStatus(ticketId, newStatus);
+        // print out status entry
+            System.out.print("Enter new status (Open/In Progress/Resolved/Closed):");
+            String newStatus = scanner.nextLine();
+        // try catch
+            try {
+                ticketService.updateStatus(ticketId, newStatus);
 
-        System.out.println("Ticket " + ticketId + " updated to: " + newStatus);
+                System.out.println("Ticket " + ticketId + " updated to: " + newStatus);
+            }
+            catch (SQLException exception) {
+                System.out.println("Error updating ticket: " + exception.getMessage());
+            }
+        }
+
+    private static void deleteTicket(Scanner scanner, TicketService ticketService) {
+
+        System.out.print("Enter ticket id to delete: ");
+        int ticketId = scanner.nextInt();
+
+        try {
+            ticketService.deleteTicket(ticketId);
+            System.out.println("Ticket deleted, Id: " + ticketId);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
     }
 
-    catch (SQLException exception) {
+    // Hardware service start here
 
-        System.out.println("Error updating ticket: " + exception.getMessage());
+    private static void addItem(Scanner scanner, HardwareProductsService hardwareProductsService) {
+        System.out.print("\nEnter item name: ");
+        String itemName = scanner.nextLine();
+        System.out.print("Enter item type: ");
+        String itemType = scanner.nextLine();
+        System.out.print("Enter price: ");
+        Double itemPrice = scanner.nextDouble();
+        scanner.nextLine();
+        System.out.print("Enter amount of stock: ");
+        int itemQty = scanner.nextInt();
+        scanner.nextLine();
+
+        HardwareProducts item = new HardwareProducts(itemName, itemType, itemPrice, itemQty);
+        try {
+            hardwareProductsService.addItem(item);
+            System.out.println("\nUser added successfully!");
+        } catch (SQLException e) {
+            System.out.println("\nError adding user: " + e.getMessage());
+        }
     }
-}
 
+//    private static void updateItem(Scanner scanner, HardwareProductsService hardwareProductsService) {
+//        System.out.print("\nEnter the ID of the Item you want to update: ");
+//        int itemId = scanner.nextInt();
+//        scanner.nextLine();
+//        System.out.print("Enter new item name: ");
+//        String itemName = scanner.nextLine();
+//        System.out.print("Enter new item type: ");
+//        String itemType = scanner.nextLine();
+//        System.out.print("Enter new item price: ");
+//        double itemPrice = scanner.nextDouble();
+//        scanner.nextLine();
+//        System.out.print("Enter new item stock: ");
+//        int itemQty = scanner.nextInt();
+//
+//
+//        HardwareProducts updatedItem = new HardwareProducts(itemName, itemType, itemPrice, itemQty);
+//
+//        try {
+//            hardwareProductsService.updateItem(updatedItem);
+//            System.out.println("\nUpdate request completed for Service plan ID: " + itemId);
+//        } catch (SQLException e) {
+//            System.out.println("\nError updating service plan: " + e.getMessage());
+//        }
+//    }
 // as per final fixes
     // added this to finish the view Toal Rev method
     // it was in the mentu but not wired up
@@ -547,11 +642,26 @@ private static void updateTicketStatus(Scanner scanner, TicketService ticketServ
 
             System.out.println("Total Revenue: $" + total);
 
+
+
+
  // catching exception same as others
         } catch (SQLException exception) {
 
 
             System.out.println("Error retrieving revenue: " + exception.getMessage());
+        }
+    }
+    private static void deleteProduct(Scanner scanner, HardwareProductsService hardwareProductsService) {
+
+        System.out.print("Enter Item id: ");
+        int ItemId = scanner.nextInt();
+
+        try {
+            hardwareProductsService.deleteItem(ItemId);
+            System.out.println("Service plan deleted, Id: " + ItemId);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
         }
     }
 

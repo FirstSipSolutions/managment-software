@@ -37,6 +37,13 @@ public class HardwareProducts {
         this.qty_inStock = qty_inStock;
     }
 
+    public HardwareProducts(String itemName, String itemType, double itemPrice, int qty_inStock){
+        this.itemName = itemName;
+        this.itemType = itemType;
+        this.itemPrice = itemPrice;
+        this.qty_inStock = qty_inStock;
+    }
+
     public int getItemId() {
         return itemId;
     }
