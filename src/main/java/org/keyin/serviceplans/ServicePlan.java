@@ -10,7 +10,7 @@ public class ServicePlan extends User {
     private int planId;
     private String planType;
     private String planDescription;
-    private Float planPrice;
+    private Double planPrice;
     LocalDate datePurchased = LocalDate.now();
     private int userId;
 
@@ -18,14 +18,20 @@ public class ServicePlan extends User {
     public ServicePlan(){
     }
 
-    public ServicePlan(int planId, String planType, String planDescription, Float planPrice){
+    public ServicePlan(String planType, String planDescription, double planPrice){
+        this.planType = planType;
+        this.planDescription = planDescription;
+        this.planPrice = planPrice;
+    }
+
+    public ServicePlan(int planId, String planType, String planDescription, double planPrice){
         this.planId = planId;
         this.planType = planType;
         this.planDescription = planDescription;
         this.planPrice = planPrice;
     }
 
-    public ServicePlan(int planId, String planType, String planDescription, Float planPrice, int userId) {
+    public ServicePlan(int planId, String planType, String planDescription, double planPrice, int userId) {
         this.planId = planId;
         this.planType = planType;
         this.planDescription = planDescription;
@@ -34,7 +40,7 @@ public class ServicePlan extends User {
     }
 
 
-    public ServicePlan(String planType, String planDescription, Float planPrice, LocalDate datePurchased, int userId) {
+    public ServicePlan(String planType, String planDescription, double planPrice, LocalDate datePurchased, int userId) {
 
         this.planType = planType;
         this.planDescription = planDescription;
@@ -42,6 +48,16 @@ public class ServicePlan extends User {
         this.datePurchased = datePurchased;
         this.userId = userId;
     }
+
+    public ServicePlan(int planId, String planType, String planDescription, double planPrice, LocalDate datePurchased, int userId) {
+        this.planId = planId;
+        this.planType = planType;
+        this.planDescription = planDescription;
+        this.planPrice = planPrice;
+        this.datePurchased = datePurchased;
+        this.userId = userId;
+    }
+
 
     public int getPlanId() {
         return planId;
@@ -67,11 +83,11 @@ public class ServicePlan extends User {
         this.planDescription = planDescription;
     }
 
-    public Float getPlanPrice() {
+    public double getPlanPrice() {
         return planPrice;
     }
 
-    public void setPlanPrice(Float planPrice) {
+    public void setPlanPrice(double planPrice) {
         this.planPrice = planPrice;
     }
 
